@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+    php:
+        image: matthiasnoback/advanced_testing_workshop_devtools
+        volumes:
+            - ./:/opt:cached
+            - ~/.composer:/home/.composer:cached
+        environment:
+            COMPOSER_HOME: /home/.composer
+        user: ${HOST_UID}:${HOST_GID}

@@ -1,0 +1,34 @@
+{
+    "authors": [
+        {
+            "name": "Matthias Noback",
+            "email": "matthiasnoback@gmail.com"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "^7.0",
+        "phpstan/phpstan": "^0.10.3",
+        "phpstan/phpstan-beberlei-assert": "^0.10.0",
+        "phpstan/phpstan-phpunit": "^0.10.0"
+    },
+    "require": {
+        "php": "^7.1",
+        "beberlei/assert": "^2.9",
+        "ramsey/uuid": "^3.7",
+        "roave/security-advisories": "dev-master",
+        "matthiasnoback/php-workshop-tools": "^0.21"
+    },
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "": ["test/Unit"]
+        },
+        "files": [
+            "vendor/phpunit/phpunit/src/Framework/Assert/Functions.php"
+        ]
+    }
+}
