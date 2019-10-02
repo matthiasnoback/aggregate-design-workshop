@@ -1,12 +1,10 @@
 # Aggregate design workshop
 
-[![Build Status](https://travis-ci.org/matthiasnoback/aggregate-design-workshop.svg?branch=master)](https://travis-ci.org/matthiasnoback/aggregate-design-workshop)
-
 ## Option 1: Use with locally installed PHP
 
 ### Requirements
 
-- PHP (>= 7.2)
+- PHP (>= 7.1)
 - Composer
 
 ### Getting started
