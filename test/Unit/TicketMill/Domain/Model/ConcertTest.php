@@ -132,7 +132,7 @@ final class ConcertTest extends AggregateTestCase
         $concert = $this->concertWithNumberOfSeatsAvailable(10);
 
         $this->expectException(CouldNotBuyTickets::class);
-        $this->expectExceptionMessage('not enough seats available');
+        $this->expectExceptionMessage('Not enough seats were available');
 
         $concert->buyTickets($this->anEmailAddress(), $moreThanAvailable = 11);
     }
@@ -148,7 +148,7 @@ final class ConcertTest extends AggregateTestCase
         $concert->buyTickets($this->anEmailAddress(), 7);
 
         $this->expectException(CouldNotBuyTickets::class);
-        $this->expectExceptionMessage('not enough seats available');
+        $this->expectExceptionMessage('Not enough seats were available');
 
         $concert->buyTickets($this->anEmailAddress(), $moreThanAvailable = 6);
     }
