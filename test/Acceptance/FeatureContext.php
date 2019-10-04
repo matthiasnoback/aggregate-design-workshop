@@ -46,32 +46,41 @@ final class FeatureContext implements Context
      */
     public function aConcertWasPlannedWithSeats(int $numberOfSeats): void
     {
-        $service = $this->container->planConcertService();
-        $name = 'A concert';
-        $date = '2020-09-01 20:00';
-
-        // TODO plan the concert
-        // TODO store the returned ConcertId in $this->concertId
-
-        throw new PendingException();
+        $this->concertId = $this->container->planConcertService()->plan(
+            'A concert',
+            '2020-09-01 20:00',
+            $numberOfSeats
+        );
     }
 
     /**
      * @When I make a reservation for :numberOfSeats seats and provide :emailAddress as my email address
-     * @Given :numberOfSeats seats have already been reserved
      */
     public function iMakeAReservationForSeats(int $numberOfSeats, string $emailAddress): void
     {
         Assertion::isInstanceOf($this->concertId, ConcertId::class);
 
-        $service = $this->container->makeReservationService();
-
-        $concertId = $this->concertId->asString();
         $this->emailAddress = $emailAddress;
 
-        // TODO make the reservation
+        $this->container->makeReservationService()->makeReservation(
+            $this->concertId->asString(),
+            $emailAddress,
+            $numberOfSeats
+        );
+    }
 
-        throw new PendingException();
+    /**
+     * @Given :numberOfSeats seats have already been reserved
+     */
+    public function seatsHaveAlreadyBeenReserved(int $numberOfSeats): void
+    {
+        Assertion::isInstanceOf($this->concertId, ConcertId::class);
+
+        $this->container->makeReservationService()->makeReservation(
+            $this->concertId->asString(),
+            'test@example.com',
+            $numberOfSeats
+        );
     }
 
     /**
@@ -79,17 +88,15 @@ final class FeatureContext implements Context
      */
     public function iTryToMakeAReservationForSeats(int $numberOfSeats): void
     {
-        throw new PendingException();
-
         $this->shouldFail(
-            function () {
+            function () use ($numberOfSeats) {
                 Assertion::isInstanceOf($this->concertId, ConcertId::class);
 
-                $service = $this->container->makeReservationService();
-                $concertId = $this->concertId->asString();
-                $emailAddress = 'test@example.com';
-
-                // TODO make the reservation
+                $this->container->makeReservationService()->makeReservation(
+                    $this->concertId->asString(),
+                    'test@example.com',
+                    $numberOfSeats
+                );
             }
         );
     }
@@ -123,6 +130,10 @@ final class FeatureContext implements Context
 
             throw new ExpectedAnException();
         } catch (Exception $exception) {
+            if ($exception instanceof ExpectedAnException) {
+                throw $exception;
+            }
+
             $this->exception = $exception;
         }
     }

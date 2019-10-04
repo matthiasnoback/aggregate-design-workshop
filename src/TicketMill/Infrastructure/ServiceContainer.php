@@ -9,6 +9,7 @@ use TicketMill\Application\Notifications\SendMail;
 use TicketMill\Application\PlanConcert;
 use TicketMill\Domain\Model\Concert\ReservationWasMade;
 use TicketMill\Domain\Model\Concert\ConcertRepository;
+use TicketMill\Domain\Model\Reservation\ReservationRepository;
 
 final class ServiceContainer
 {
@@ -38,6 +39,13 @@ final class ServiceContainer
         static $service;
 
         return $service ?? $service = new InMemoryConcertRepository();
+    }
+
+    private function reservationRepository(): ReservationRepository
+    {
+        static $service;
+
+        return $service ?? $service = new InMemoryReservationRepository();
     }
 
     public function mailer(): MailerSpy
