@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d5b49c31bf83d26f1d0637d016c22161",
+    "content-hash": "1afd5c96ddf137f2444e76d8b5ca058b",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -1354,6 +1354,36 @@
                 "versions"
             ],
             "time": "2018-06-13T13:22:40+00:00"
+        },
+        {
+            "name": "matthiasnoback/behat-expect-exception",
+            "version": "v0.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/matthiasnoback/behat-expect-exception.git",
+                "reference": "570fc5a3152b345d6e7a840104557af516ff1bd0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/matthiasnoback/behat-expect-exception/zipball/570fc5a3152b345d6e7a840104557af516ff1bd0",
+                "reference": "570fc5a3152b345d6e7a840104557af516ff1bd0",
+                "shasum": ""
+            },
+            "require-dev": {
+                "behat/behat": "^3.5",
+                "php": "^7.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "time": "2019-10-04T12:37:28+00:00"
         },
         {
             "name": "myclabs/deep-copy",

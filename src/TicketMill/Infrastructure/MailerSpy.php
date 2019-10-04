@@ -26,7 +26,7 @@ final class MailerSpy implements Mailer
 
     public function assertEmailSent(string $emailAddress, string $messageContains): void
     {
-        Assert::assertArrayHasKey($emailAddress, $this->emails);
+        Assert::assertArrayHasKey($emailAddress, $this->emails, 'No mails were sent to ' . $emailAddress);
         foreach ($this->emails[$emailAddress] as $emailBody) {
             if (strpos($emailBody, $messageContains) !== false) {
                 return;

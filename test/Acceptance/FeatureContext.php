@@ -6,17 +6,14 @@ namespace Test\Acceptance;
 use Assert\Assertion;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Tester\Exception\PendingException;
+use BehatExpectException\ExpectException;
 use Exception;
-use PHPUnit\Framework\Assert;
 use TicketMill\Domain\Model\Concert\ConcertId;
 use TicketMill\Infrastructure\ServiceContainer;
 
 final class FeatureContext implements Context
 {
-    /**
-     * @var Exception|null
-     */
-    private $exception;
+    use ExpectException;
 
     /**
      * @var ServiceContainer
@@ -119,22 +116,9 @@ final class FeatureContext implements Context
      */
     public function theSystemWillTellMeThat(string $messageContains): void
     {
-        Assert::assertInstanceOf(Exception::class, $this->exception);
-        Assert::assertContains($messageContains, $this->exception->getMessage());
-    }
-
-    private function shouldFail(callable $function): void
-    {
-        try {
-            $function();
-
-            throw new ExpectedAnException();
-        } catch (Exception $exception) {
-            if ($exception instanceof ExpectedAnException) {
-                throw $exception;
-            }
-
-            $this->exception = $exception;
-        }
+        $this->assertCaughtExceptionMatches(
+            Exception::class,
+            $messageContains
+        );
     }
 }
