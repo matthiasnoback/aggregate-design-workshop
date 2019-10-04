@@ -5,6 +5,9 @@ namespace TicketMill\Domain\Model\Reservation;
 
 use Assert\Assertion;
 
+/**
+ * @deprecated Only use this when you arrived at Assignment 5
+ */
 final class ReservationId
 {
     /**
