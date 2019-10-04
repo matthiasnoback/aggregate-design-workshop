@@ -1,8 +1,9 @@
 <?php
 
-namespace TicketMill\Domain\Model;
+namespace TicketMill\Domain\Model\Concert;
 
 use InvalidArgumentException;
+use TicketMill\Domain\Model\Common\EmailAddress;
 use Utility\AggregateTestCase;
 
 final class ConcertTest extends AggregateTestCase
@@ -17,10 +18,10 @@ final class ConcertTest extends AggregateTestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('name');
 
-        new Concert(
+        Concert::plan(
             $this->aConcertId(),
-            $this->aDate(),
             $anEmptyName = '',
+            $this->aDate(),
             10
         );
     }
@@ -35,10 +36,10 @@ final class ConcertTest extends AggregateTestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('seats');
 
-        new Concert(
+        Concert::plan(
             $this->aConcertId(),
-            $this->aDate(),
             $this->aName(),
+            $this->aDate(),
             0
         );
     }
@@ -97,60 +98,59 @@ final class ConcertTest extends AggregateTestCase
 
         $concert = $this->aConcert();
         $concert->cancel();
-        $concert->clearEvents(); // the first time we cancel the concert, an event will be recorded
+        $concert->releaseEvents(); // the first time we cancel the concert, an event will be recorded
 
-        $concert->cancel($anotherDate = ScheduledDate::fromString('2021-10-01 20:00'));
+        $concert->cancel();
 
-        self::assertCount(0, $concert->recordedEvents());
+        self::assertCount(0, $concert->releaseEvents());
     }
 
     /**
      * @test
      */
-    public function you_can_buy_tickets_for_a_concert(): void
+    public function you_can_reserve_seats_for_a_concert(): void
     {
         $this->markTestIncomplete('Assignment 4');
 
         $concert = $this->concertWithNumberOfSeatsAvailable(10);
 
-        $concert->buyTickets($this->anEmailAddress(), 3);
+        $concert->makeReservation($this->anEmailAddress(), 3);
 
         self::assertArrayContainsObjectOfClass(
-            TicketWasBought::class,
-            $concert->recordedEvents(),
-            3
+            ReservationWasMade::class,
+            $concert->releaseEvents()
         );
     }
 
     /**
      * @test
      */
-    public function you_can_not_buy_more_tickets_for_a_concert_than_there_are_seats(): void
+    public function you_can_not_reserve_more_seats_for_a_concert_than_there_are_seats(): void
     {
         $this->markTestIncomplete('Assignment 4');
 
         $concert = $this->concertWithNumberOfSeatsAvailable(10);
 
-        $this->expectException(CouldNotBuyTickets::class);
+        $this->expectException(CouldNotReserveSeats::class);
         $this->expectExceptionMessage('Not enough seats were available');
 
-        $concert->buyTickets($this->anEmailAddress(), $moreThanAvailable = 11);
+        $concert->makeReservation($this->anEmailAddress(), $moreThanAvailable = 11);
     }
 
     /**
      * @test
      */
-    public function you_can_not_buy_more_tickets_for_a_concert_than_there_are_seats_available(): void
+    public function you_can_not_reserve_more_seats_for_a_concert_than_there_are_seats_available(): void
     {
         $this->markTestIncomplete('Assignment 4');
 
         $concert = $this->concertWithNumberOfSeatsAvailable(10);
-        $concert->buyTickets($this->anEmailAddress(), 7);
+        $concert->makeReservation($this->anEmailAddress(), 7);
 
-        $this->expectException(CouldNotBuyTickets::class);
+        $this->expectException(CouldNotReserveSeats::class);
         $this->expectExceptionMessage('Not enough seats were available');
 
-        $concert->buyTickets($this->anEmailAddress(), $moreThanAvailable = 6);
+        $concert->makeReservation($this->anEmailAddress(), $moreThanAvailable = 6);
     }
 
     private function aConcertId(): ConcertId
@@ -167,8 +167,8 @@ final class ConcertTest extends AggregateTestCase
     {
         return Concert::plan(
             $this->aConcertId(),
-            $this->aDate(),
             $this->aName(),
+            $this->aDate(),
             $numberOfSeats
         );
     }
@@ -187,8 +187,8 @@ final class ConcertTest extends AggregateTestCase
     {
         return Concert::plan(
             $this->aConcertId(),
-            ScheduledDate::fromString($date),
             $this->aName(),
+            ScheduledDate::fromString($date),
             $this->aNumberOfSeats()
         );
     }
@@ -197,8 +197,8 @@ final class ConcertTest extends AggregateTestCase
     {
         return Concert::plan(
             $this->aConcertId(),
-            $this->aDate(),
             $this->aName(),
+            $this->aDate(),
             $this->aNumberOfSeats()
         );
     }

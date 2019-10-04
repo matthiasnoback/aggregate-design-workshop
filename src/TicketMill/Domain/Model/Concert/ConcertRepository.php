@@ -1,6 +1,6 @@
 <?php
 
-namespace TicketMill\Domain\Model;
+namespace TicketMill\Domain\Model\Concert;
 
 interface ConcertRepository
 {

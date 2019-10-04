@@ -1,7 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace TicketMill\Domain\Model;
+namespace TicketMill\Domain\Model\Concert;
+
+use TicketMill\Domain\Model\Common\EmailAddress;
 
 final class Ticket
 {

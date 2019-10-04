@@ -1,9 +1,10 @@
 <?php
 
-namespace TicketMill\Domain\Model;
+namespace TicketMill\Domain\Model\Common;
 
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+use TicketMill\Domain\Model\Common\EmailAddress;
 
 final class EmailAddressTest extends TestCase
 {

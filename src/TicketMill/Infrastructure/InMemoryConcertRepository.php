@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Test\Acceptance\InfrastructureStandins;
+namespace TicketMill\Infrastructure;
 
 use Ramsey\Uuid\Uuid;
-use TicketMill\Domain\Model\Concert;
-use TicketMill\Domain\Model\ConcertId;
-use TicketMill\Domain\Model\ConcertRepository;
-use TicketMill\Domain\Model\CouldNotFindConcert;
+use TicketMill\Domain\Model\Concert\Concert;
+use TicketMill\Domain\Model\Concert\ConcertId;
+use TicketMill\Domain\Model\Concert\ConcertRepository;
+use TicketMill\Domain\Model\Concert\CouldNotFindConcert;
 
 final class InMemoryConcertRepository implements ConcertRepository
 {
