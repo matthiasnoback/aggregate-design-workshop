@@ -34,7 +34,7 @@ final class MailerSpyTest extends TestCase
     public function it_fails_if_an_email_was_sent_but_it_does_not_contain_the_expected_message(): void
     {
         $emailAddress = $this->anEmailAddress();
-        $this->mailer->sendReservationWasMadeEmail($emailAddress, $this->aNumberOfSeats());
+        $this->mailer->sendReservationWasConfirmedEmail($emailAddress, $this->aNumberOfSeats());
 
         $this->expectException(ExpectationFailedException::class);
 
@@ -49,7 +49,7 @@ final class MailerSpyTest extends TestCase
         $emailAddress = $this->anEmailAddress();
         $numberOfSeats = $this->aNumberOfSeats();
 
-        $this->mailer->sendReservationWasMadeEmail($emailAddress, $numberOfSeats);
+        $this->mailer->sendReservationWasConfirmedEmail($emailAddress, $numberOfSeats);
 
         $this->mailer->assertEmailSent(
             $emailAddress->asString(),

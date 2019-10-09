@@ -25,4 +25,31 @@ final class ReservationTest extends AggregateTestCase
             $reservation->releaseEvents()
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_can_be_confirmed(): void
+    {
+        $reservation = $this->aReservation();
+
+        $reservation->confirm();
+
+        self::assertArrayContainsObjectOfClass(
+            ReservationWasConfirmed::class,
+            $reservation->releaseEvents()
+        );
+    }
+
+    private function aReservation(): Reservation
+    {
+        $reservation = Reservation::make(
+            ReservationId::fromString('cd2514c8-ac19-4e1c-9a8c-1204782233d9'),
+            ConcertId::fromString('ca1f570f-e314-4199-9abb-74177b6da280'),
+            EmailAddress::fromString('test@example.com'),
+            3
+        );
+
+        return $reservation;
+    }
 }

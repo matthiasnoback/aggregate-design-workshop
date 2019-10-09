@@ -16,4 +16,9 @@ final class ReservationWasAccepted
     {
         $this->reservationId = $reservationId;
     }
+
+    public function reservationId(): ReservationId
+    {
+        return $this->reservationId;
+    }
 }

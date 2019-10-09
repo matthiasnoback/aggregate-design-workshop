@@ -16,7 +16,7 @@ final class MailerSpy implements Mailer
      */
     private $emails = [];
 
-    public function sendReservationWasMadeEmail(EmailAddress $emailAddress, int $numberOfSeats): void
+    public function sendReservationWasConfirmedEmail(EmailAddress $emailAddress, int $numberOfSeats): void
     {
         $this->emails[$emailAddress->asString()][] = sprintf(
             '%d seats have been reserved',

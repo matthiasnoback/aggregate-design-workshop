@@ -111,7 +111,7 @@ final class Concert
 
     public function processReservation(ReservationId $reservationId, int $numberOfSeatsReserved): void
     {
-        if ($this->numberOfSeatsAvailable > $numberOfSeatsReserved) {
+        if ($this->numberOfSeatsAvailable >= $numberOfSeatsReserved) {
             $this->numberOfSeatsAvailable -= $numberOfSeatsReserved;
             $this->recordThat(new ReservationWasAccepted($reservationId));
         } else {
