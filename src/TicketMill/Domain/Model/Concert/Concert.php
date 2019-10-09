@@ -26,8 +26,20 @@ final class Concert
      */
     private $date;
 
-    private function __construct()
-    {
+    private function __construct(
+        ConcertId $concertId,
+        string $name,
+        ScheduledDate $date,
+        int $numberOfSeats
+    ) {
+        $this->concertId = $concertId;
+
+        Assertion::notEq($name, '', 'Name should not be empty');
+        $this->name = $name;
+
+        $this->date = $date;
+
+        Assertion::greaterThan($numberOfSeats, 0, 'Number of seats should be greater than 0');
     }
 
     public static function plan(
@@ -35,20 +47,13 @@ final class Concert
         string $name,
         ScheduledDate $date,
         int $numberOfSeats
-    ): Concert
-    {
-        $concert = new self();
-
-        $concert->concertId = $concertId;
-
-        Assertion::notEq($name, '', 'Name should not be empty');
-        $concert->name = $name;
-
-        $concert->date = $date;
-
-        Assertion::greaterThan($numberOfSeats, 0, 'Number of seats should be greater than 0');
-
-        return $concert;
+    ): Concert {
+        return new self(
+            $concertId,
+            $name,
+            $date,
+            $numberOfSeats
+        );
     }
 
     public function concertId(): ConcertId
