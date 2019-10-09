@@ -15,8 +15,15 @@ final class Concert
      */
     private $concertId;
 
-    private function __construct()
-    {
+    private function __construct(
+        ConcertId $concertId,
+        string $name,
+        ScheduledDate $date,
+        int $numberOfSeats
+    ) {
+        $this->concertId = $concertId;
+
+        // TODO assign more properties
     }
 
     public static function plan(
@@ -26,13 +33,12 @@ final class Concert
         int $numberOfSeats
     ): Concert
     {
-        $concert = new self();
-
-        $concert->concertId = $concertId;
-
-        // TODO assign more properties
-
-        return $concert;
+        return new self(
+            $concertId,
+            $name,
+            $date,
+            $numberOfSeats
+        );
     }
 
     public function concertId(): ConcertId
