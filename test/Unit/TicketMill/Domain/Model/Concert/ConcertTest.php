@@ -92,6 +92,21 @@ final class ConcertTest extends AggregateTestCase
     /**
      * @test
      */
+    public function it_can_be_cancelled(): void
+    {
+        $this->markTestIncomplete('Assignment 3');
+
+        $concert = $this->aConcert();
+        $concert->releaseEvents();
+
+        $concert->cancel();
+
+        // TODO: Verify that the concert has indeed been cancelled
+    }
+
+    /**
+     * @test
+     */
     public function cancelling_the_concert_twice_has_no_effect(): void
     {
         $this->markTestIncomplete('Assignment 3');
