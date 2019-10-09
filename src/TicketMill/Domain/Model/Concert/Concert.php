@@ -63,6 +63,12 @@ final class Concert
 
     public function reschedule(ScheduledDate $newDate): void
     {
+        if ($this->date->equals($newDate)) {
+            return;
+        }
+
+        $this->date = $newDate;
+        $this->events[] = new ConcertWasRescheduled();
     }
 
     public function cancel(): void
