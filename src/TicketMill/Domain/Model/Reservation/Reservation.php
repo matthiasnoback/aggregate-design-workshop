@@ -44,6 +44,7 @@ final class Reservation
 
         $this->recordThat(
             new ReservationWasMade(
+                $reservationId,
                 $concertId,
                 $emailAddress,
                 $numberOfSeats

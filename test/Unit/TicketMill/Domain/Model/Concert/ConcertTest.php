@@ -3,8 +3,7 @@
 namespace TicketMill\Domain\Model\Concert;
 
 use InvalidArgumentException;
-use TicketMill\Domain\Model\Common\EmailAddress;
-use TicketMill\Domain\Model\Reservation\ReservationWasMade;
+use TicketMill\Domain\Model\Reservation\ReservationId;
 use Utility\AggregateTestCase;
 
 final class ConcertTest extends AggregateTestCase
@@ -119,14 +118,31 @@ final class ConcertTest extends AggregateTestCase
     /**
      * @test
      */
-    public function it_takes_into_account_the_number_of_reserved_seats_when_calculating_the_number_of_available_seats(): void
+    public function it_will_accept_a_reservation_when_a_sufficient_number_of_seats_is_available(): void
     {
         $concert = $this->concertWithNumberOfSeatsAvailable(10);
-        self::assertEquals(10, $concert->numberOfSeatsAvailable());
-        $concert->processReservation(2);
-        self::assertEquals(8, $concert->numberOfSeatsAvailable());
-        $concert->processReservation(3);
-        self::assertEquals(5, $concert->numberOfSeatsAvailable());
+
+        $concert->processReservation($this->aReservationId(), 2);
+
+        self::assertArrayContainsObjectOfClass(
+            ReservationWasAccepted::class,
+            $concert->releaseEvents()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_will_not_accept_a_reservation_when_an_insufficient_number_of_seats_is_available(): void
+    {
+        $concert = $this->concertWithNumberOfSeatsAvailable(10);
+
+        $concert->processReservation($this->aReservationId(), 12);
+
+        self::assertArrayContainsObjectOfClass(
+            ReservationWasRejected::class,
+            $concert->releaseEvents()
+        );
     }
 
     private function aConcertId(): ConcertId
@@ -147,11 +163,6 @@ final class ConcertTest extends AggregateTestCase
             $this->aDate(),
             $numberOfSeats
         );
-    }
-
-    private function anEmailAddress(): EmailAddress
-    {
-        return EmailAddress::fromString('test@example.com');
     }
 
     private function aDate(): ScheduledDate
@@ -182,5 +193,10 @@ final class ConcertTest extends AggregateTestCase
     private function aNumberOfSeats(): int
     {
         return 10;
+    }
+
+    private function aReservationId(): ReservationId
+    {
+        return ReservationId::fromString('e4186a82-e134-489a-bef4-aed9864d8aea');
     }
 }

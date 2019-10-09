@@ -37,7 +37,7 @@ final class ServiceContainer
         );
         $eventDispatcher->registerSubscriber(
             ReservationWasMade::class,
-            [new ProcessReservation($this->concertRepository()), 'whenReservationWasMade']
+            [new ProcessReservation($this->concertRepository(), $eventDispatcher), 'whenReservationWasMade']
         );
 
         return $eventDispatcher;
