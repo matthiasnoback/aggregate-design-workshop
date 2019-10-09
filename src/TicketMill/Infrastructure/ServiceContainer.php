@@ -7,6 +7,7 @@ use Common\EventDispatcher\EventDispatcher;
 use TicketMill\Application\MakeReservation;
 use TicketMill\Application\Notifications\SendMail;
 use TicketMill\Application\PlanConcert;
+use TicketMill\Application\ProcessReservation;
 use TicketMill\Domain\Model\Reservation\ReservationWasMade;
 use TicketMill\Domain\Model\Concert\ConcertRepository;
 use TicketMill\Domain\Model\Reservation\ReservationRepository;
@@ -33,6 +34,10 @@ final class ServiceContainer
         $eventDispatcher->registerSubscriber(
             ReservationWasMade::class,
             [new SendMail($this->mailer()), 'whenReservationWasMade']
+        );
+        $eventDispatcher->registerSubscriber(
+            ReservationWasMade::class,
+            [new ProcessReservation($this->concertRepository()), 'whenReservationWasMade']
         );
 
         return $eventDispatcher;

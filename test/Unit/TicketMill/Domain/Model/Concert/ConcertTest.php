@@ -116,6 +116,19 @@ final class ConcertTest extends AggregateTestCase
         self::assertCount(0, $concert->releaseEvents());
     }
 
+    /**
+     * @test
+     */
+    public function it_takes_into_account_the_number_of_reserved_seats_when_calculating_the_number_of_available_seats(): void
+    {
+        $concert = $this->concertWithNumberOfSeatsAvailable(10);
+        self::assertEquals(10, $concert->numberOfSeatsAvailable());
+        $concert->processReservation(2);
+        self::assertEquals(8, $concert->numberOfSeatsAvailable());
+        $concert->processReservation(3);
+        self::assertEquals(5, $concert->numberOfSeatsAvailable());
+    }
+
     private function aConcertId(): ConcertId
     {
         return ConcertId::fromString('de939fac-7777-449a-9360-b66f3cc3daec');

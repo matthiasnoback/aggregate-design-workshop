@@ -35,6 +35,11 @@ final class Concert
      */
     private $numberOfSeats;
 
+    /**
+     * @var int
+     */
+    private $numberOfSeatsAvailable;
+
     private function __construct(
         ConcertId $concertId,
         string $name,
@@ -50,6 +55,8 @@ final class Concert
 
         Assertion::greaterThan($numberOfSeats, 0, 'Number of seats should be greater than 0');
         $this->numberOfSeats = $numberOfSeats;
+
+        $this->numberOfSeatsAvailable = $numberOfSeats;
     }
 
     public static function plan(
@@ -98,6 +105,11 @@ final class Concert
     public function numberOfSeatsAvailable(): int
     {
         // TODO make this return the correct value, taking into account the reservations
-        return $this->numberOfSeats;
+        return $this->numberOfSeatsAvailable;
+    }
+
+    public function processReservation(int $numberOfSeatsReserved): void
+    {
+        $this->numberOfSeatsAvailable -= $numberOfSeatsReserved;
     }
 }
