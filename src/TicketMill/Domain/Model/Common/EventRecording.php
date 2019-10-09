@@ -21,6 +21,9 @@ trait EventRecording
      */
     final public function releaseEvents(): array
     {
-        return $this->events;
+        $events = $this->events;
+        $this->events = [];
+
+        return $events;
     }
 }
