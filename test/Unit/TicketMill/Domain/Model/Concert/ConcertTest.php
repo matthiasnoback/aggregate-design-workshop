@@ -120,8 +120,6 @@ final class ConcertTest extends AggregateTestCase
      */
     public function you_can_reserve_seats_for_a_concert(): void
     {
-        $this->markTestIncomplete('Assignment 4');
-
         $concert = $this->concertWithNumberOfSeatsAvailable(10);
 
         $concert->makeReservation($this->anEmailAddress(), 3);
@@ -138,8 +136,6 @@ final class ConcertTest extends AggregateTestCase
      */
     public function you_can_not_reserve_more_seats_for_a_concert_than_there_are_seats(): void
     {
-        $this->markTestIncomplete('Assignment 4');
-
         $concert = $this->concertWithNumberOfSeatsAvailable(10);
 
         $this->expectException(CouldNotReserveSeats::class);
@@ -153,8 +149,6 @@ final class ConcertTest extends AggregateTestCase
      */
     public function you_can_not_reserve_more_seats_for_a_concert_than_there_are_seats_available(): void
     {
-        $this->markTestIncomplete('Assignment 4');
-
         $concert = $this->concertWithNumberOfSeatsAvailable(10);
         $concert->makeReservation($this->anEmailAddress(), 7);
         self::assertEquals(3, $concert->numberOfSeatsAvailable());
