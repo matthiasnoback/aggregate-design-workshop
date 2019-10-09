@@ -51,7 +51,7 @@ final class ConcertTest extends AggregateTestCase
     {
         $this->markTestIncomplete('Assignment 2');
 
-        $concert = $this->aConcertScheduledFor('2021-10-01 20:00');
+        $concert = $this->aConcertScheduledFor('2020-09-01 20:00');
 
         // TODO: Verify that the concert has indeed been rescheduled
         $concert->reschedule($anotherDate = ScheduledDate::fromString('2021-10-01 20:00'));
