@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace TicketMill\Domain\Model\Concert;
 
+use Assert\Assertion;
 use TicketMill\Domain\Model\Common\EmailAddress;
 use TicketMill\Domain\Model\Common\EventRecording;
 
@@ -14,6 +15,16 @@ final class Concert
      * @var ConcertId
      */
     private $concertId;
+
+    /**
+     * @var string
+     */
+    private $name;
+
+    /**
+     * @var ScheduledDate
+     */
+    private $date;
 
     private function __construct()
     {
@@ -30,7 +41,12 @@ final class Concert
 
         $concert->concertId = $concertId;
 
-        // TODO assign more properties
+        Assertion::notEq($name, '', 'Name should not be empty');
+        $concert->name = $name;
+
+        $concert->date = $date;
+
+        Assertion::greaterThan($numberOfSeats, 0, 'Number of seats should be greater than 0');
 
         return $concert;
     }
