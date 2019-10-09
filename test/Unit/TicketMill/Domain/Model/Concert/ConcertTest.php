@@ -4,6 +4,7 @@ namespace TicketMill\Domain\Model\Concert;
 
 use InvalidArgumentException;
 use TicketMill\Domain\Model\Common\EmailAddress;
+use TicketMill\Domain\Model\Reservation\ReservationWasMade;
 use Utility\AggregateTestCase;
 
 final class ConcertTest extends AggregateTestCase
@@ -113,50 +114,6 @@ final class ConcertTest extends AggregateTestCase
         $concert->cancel();
 
         self::assertCount(0, $concert->releaseEvents());
-    }
-
-    /**
-     * @test
-     */
-    public function you_can_reserve_seats_for_a_concert(): void
-    {
-        $concert = $this->concertWithNumberOfSeatsAvailable(10);
-
-        $concert->makeReservation($this->anEmailAddress(), 3);
-
-        self::assertArrayContainsObjectOfClass(
-            ReservationWasMade::class,
-            $concert->releaseEvents()
-        );
-        self::assertEquals(7, $concert->numberOfSeatsAvailable());
-    }
-
-    /**
-     * @test
-     */
-    public function you_can_not_reserve_more_seats_for_a_concert_than_there_are_seats(): void
-    {
-        $concert = $this->concertWithNumberOfSeatsAvailable(10);
-
-        $this->expectException(CouldNotReserveSeats::class);
-        $this->expectExceptionMessage('Not enough seats were available');
-
-        $concert->makeReservation($this->anEmailAddress(), $moreThanAvailable = 11);
-    }
-
-    /**
-     * @test
-     */
-    public function you_can_not_reserve_more_seats_for_a_concert_than_there_are_seats_available(): void
-    {
-        $concert = $this->concertWithNumberOfSeatsAvailable(10);
-        $concert->makeReservation($this->anEmailAddress(), 7);
-        self::assertEquals(3, $concert->numberOfSeatsAvailable());
-
-        $this->expectException(CouldNotReserveSeats::class);
-        $this->expectExceptionMessage('Not enough seats were available');
-
-        $concert->makeReservation($this->anEmailAddress(), $moreThanAvailable = 6);
     }
 
     private function aConcertId(): ConcertId

@@ -4,13 +4,13 @@ declare(strict_types=1);
 namespace TicketMill\Domain\Model\Reservation;
 
 use TicketMill\Domain\Model\Common\EmailAddress;
+use TicketMill\Domain\Model\Common\EventRecording;
 use TicketMill\Domain\Model\Concert\ConcertId;
 
-/**
- * @deprecated Only use this when you arrived at Assignment 5
- */
 final class Reservation
 {
+    use EventRecording;
+
     /**
      * @var ReservationId
      */
@@ -31,8 +31,24 @@ final class Reservation
      */
     private $numberOfSeats;
 
-    private function __construct()
-    {
+    private function __construct(
+        ReservationId $reservationId,
+        ConcertId $concertId,
+        EmailAddress $emailAddress,
+        int $numberOfSeats
+    ) {
+        $this->reservationId = $reservationId;
+        $this->concertId = $concertId;
+        $this->emailAddress = $emailAddress;
+        $this->numberOfSeats = $numberOfSeats;
+
+        $this->recordThat(
+            new ReservationWasMade(
+                $concertId,
+                $emailAddress,
+                $numberOfSeats
+            )
+        );
     }
 
     public static function make(
@@ -41,14 +57,12 @@ final class Reservation
         EmailAddress $emailAddress,
         int $numberOfSeats
     ): Reservation {
-        $reservation = new self();
-
-        $reservation->reservationId = $reservationId;
-        $reservation->concertId = $concertId;
-        $reservation->emailAddress = $emailAddress;
-        $reservation->numberOfSeats = $numberOfSeats;
-
-        return $reservation;
+        return new self(
+            $reservationId,
+            $concertId,
+            $emailAddress,
+            $numberOfSeats
+        );
     }
 
     public function reservationId(): ReservationId

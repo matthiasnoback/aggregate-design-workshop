@@ -7,7 +7,7 @@ use Common\EventDispatcher\EventDispatcher;
 use TicketMill\Application\MakeReservation;
 use TicketMill\Application\Notifications\SendMail;
 use TicketMill\Application\PlanConcert;
-use TicketMill\Domain\Model\Concert\ReservationWasMade;
+use TicketMill\Domain\Model\Reservation\ReservationWasMade;
 use TicketMill\Domain\Model\Concert\ConcertRepository;
 use TicketMill\Domain\Model\Reservation\ReservationRepository;
 
@@ -20,7 +20,11 @@ final class ServiceContainer
 
     public function makeReservationService(): MakeReservation
     {
-        return new MakeReservation($this->concertRepository(), $this->eventDispatcher());
+        return new MakeReservation(
+            $this->concertRepository(),
+            $this->reservationRepository(),
+            $this->eventDispatcher()
+        );
     }
 
     private function eventDispatcher(): EventDispatcher
