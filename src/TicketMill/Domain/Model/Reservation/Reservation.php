@@ -92,4 +92,9 @@ final class Reservation
             )
         );
     }
+
+    public function isConfirmed(): bool
+    {
+        return $this->isConfirmed;
+    }
 }

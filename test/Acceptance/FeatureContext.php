@@ -8,7 +8,9 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Tester\Exception\PendingException;
 use BehatExpectException\ExpectException;
 use Exception;
+use PHPUnit\Framework\Assert;
 use TicketMill\Domain\Model\Concert\ConcertId;
+use TicketMill\Domain\Model\Reservation\ReservationId;
 use TicketMill\Infrastructure\ServiceContainer;
 
 final class FeatureContext implements Context
@@ -29,6 +31,11 @@ final class FeatureContext implements Context
      * @var string|null
      */
     private $emailAddress;
+
+    /**
+     * @var ReservationId|null
+     */
+    private $reservationId;
 
     /**
      * @BeforeScenario
@@ -85,16 +92,12 @@ final class FeatureContext implements Context
      */
     public function iTryToMakeAReservationForSeats(int $numberOfSeats): void
     {
-        $this->shouldFail(
-            function () use ($numberOfSeats) {
-                Assertion::isInstanceOf($this->concertId, ConcertId::class);
+        Assertion::isInstanceOf($this->concertId, ConcertId::class);
 
-                $this->container->makeReservationService()->makeReservation(
-                    $this->concertId->asString(),
-                    'test@example.com',
-                    $numberOfSeats
-                );
-            }
+        $this->reservationId = $this->container->makeReservationService()->makeReservation(
+            $this->concertId->asString(),
+            'test@example.com',
+            $numberOfSeats
         );
     }
 
@@ -120,5 +123,16 @@ final class FeatureContext implements Context
             Exception::class,
             $messageContains
         );
+    }
+
+    /**
+     * @Then this reservation will not be confirmed
+     */
+    public function itWillNotBeConfirmed(): void
+    {
+        Assertion::isInstanceOf($this->reservationId, ReservationId::class);
+        $reservation = $this->container->reservationRepository()->getById($this->reservationId);
+
+        Assert::assertFalse($reservation->isConfirmed());
     }
 }
