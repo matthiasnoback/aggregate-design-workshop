@@ -4,12 +4,11 @@ declare(strict_types=1);
 namespace TicketMill\Application;
 
 use Common\EventDispatcher\EventDispatcher;
-use TicketMill\Domain\Model\Common\EmailAddress;
 use TicketMill\Domain\Model\Concert\ConcertId;
 use TicketMill\Domain\Model\Concert\ConcertRepository;
 use TicketMill\Domain\Model\Concert\ReservationId;
 
-final class MakeReservation
+final class CancelReservation
 {
     /**
      * @var ConcertRepository
@@ -29,19 +28,16 @@ final class MakeReservation
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function makeReservation(string $concertId, string $emailAddress, int $numberOfSeats): ReservationId
+    public function cancelReservation(string $concertId, int $reservationId): void
     {
-        $concert = $this->concertRepository->getById(ConcertId::fromString($concertId));
-
-        $reservationId = $concert->makeReservation(
-            EmailAddress::fromString($emailAddress),
-            $numberOfSeats
+        $concert = $this->concertRepository->getById(
+            ConcertId::fromString($concertId)
         );
+
+        $concert->cancelReservation(ReservationId::fromInt($reservationId));
 
         $this->concertRepository->save($concert);
 
         $this->eventDispatcher->dispatchAll($concert->releaseEvents());
-
-        return $reservationId;
     }
 }

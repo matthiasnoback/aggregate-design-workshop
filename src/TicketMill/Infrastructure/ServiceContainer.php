@@ -4,11 +4,12 @@ declare(strict_types=1);
 namespace TicketMill\Infrastructure;
 
 use Common\EventDispatcher\EventDispatcher;
+use TicketMill\Application\CancelReservation;
 use TicketMill\Application\MakeReservation;
 use TicketMill\Application\Notifications\SendMail;
 use TicketMill\Application\PlanConcert;
-use TicketMill\Domain\Model\Concert\ReservationWasMade;
 use TicketMill\Domain\Model\Concert\ConcertRepository;
+use TicketMill\Domain\Model\Concert\ReservationWasMade;
 use TicketMill\Domain\Model\Reservation\ReservationRepository;
 
 final class ServiceContainer
@@ -21,6 +22,11 @@ final class ServiceContainer
     public function makeReservationService(): MakeReservation
     {
         return new MakeReservation($this->concertRepository(), $this->eventDispatcher());
+    }
+
+    public function cancelReservation(): CancelReservation
+    {
+        return new CancelReservation($this->concertRepository(), $this->eventDispatcher());
     }
 
     private function eventDispatcher(): EventDispatcher

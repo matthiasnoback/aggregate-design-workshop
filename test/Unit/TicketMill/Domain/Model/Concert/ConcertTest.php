@@ -170,6 +170,22 @@ final class ConcertTest extends AggregateTestCase
         $concert->makeReservation($this->anEmailAddress(), $moreThanAvailable = 6);
     }
 
+    /**
+     * @test
+     */
+    public function cancelling_a_reservation_makes_its_seats_available_again(): void
+    {
+        $this->markTestIncomplete('Assignment 4');
+
+        $concert = $this->concertWithNumberOfSeatsAvailable(10);
+        $concert->makeReservation($this->anEmailAddress(), 4);
+        $reservationId = $concert->makeReservation($this->anEmailAddress(), 3);
+
+        $concert->cancelReservation($reservationId);
+
+        self::assertEquals(10 - 4, $concert->numberOfSeatsAvailable());
+    }
+
     private function aConcertId(): ConcertId
     {
         return ConcertId::fromString('de939fac-7777-449a-9360-b66f3cc3daec');

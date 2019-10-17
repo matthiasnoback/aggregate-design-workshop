@@ -9,6 +9,7 @@ use Behat\Behat\Tester\Exception\PendingException;
 use BehatExpectException\ExpectException;
 use Exception;
 use TicketMill\Domain\Model\Concert\ConcertId;
+use TicketMill\Domain\Model\Concert\ReservationId;
 use TicketMill\Infrastructure\ServiceContainer;
 
 final class FeatureContext implements Context
@@ -29,6 +30,11 @@ final class FeatureContext implements Context
      * @var string|null
      */
     private $emailAddress;
+
+    /**
+     * @var ReservationId|null
+     */
+    private $reservationId;
 
     /**
      * @BeforeScenario
@@ -52,30 +58,18 @@ final class FeatureContext implements Context
 
     /**
      * @When I make a reservation for :numberOfSeats seats and provide :emailAddress as my email address
+     * @Then I should be able to make a reservation for :numberOfSeats seats
+     * @Given :numberOfSeats seats have already been reserved
      */
-    public function iMakeAReservationForSeats(int $numberOfSeats, string $emailAddress): void
+    public function iMakeAReservationForSeats(int $numberOfSeats, string $emailAddress = 'test@example.com'): void
     {
         Assertion::isInstanceOf($this->concertId, ConcertId::class);
 
         $this->emailAddress = $emailAddress;
 
-        $this->container->makeReservationService()->makeReservation(
+        $this->reservationId = $this->container->makeReservationService()->makeReservation(
             $this->concertId->asString(),
             $emailAddress,
-            $numberOfSeats
-        );
-    }
-
-    /**
-     * @Given :numberOfSeats seats have already been reserved
-     */
-    public function seatsHaveAlreadyBeenReserved(int $numberOfSeats): void
-    {
-        Assertion::isInstanceOf($this->concertId, ConcertId::class);
-
-        $this->container->makeReservationService()->makeReservation(
-            $this->concertId->asString(),
-            'test@example.com',
             $numberOfSeats
         );
     }
@@ -119,6 +113,20 @@ final class FeatureContext implements Context
         $this->assertCaughtExceptionMatches(
             Exception::class,
             $messageContains
+        );
+    }
+
+    /**
+     * @When I cancel this reservation
+     */
+    public function iCancelThisReservation(): void
+    {
+        Assertion::isInstanceOf($this->concertId, ConcertId::class);
+        Assertion::isInstanceOf($this->reservationId, ReservationId::class);
+
+        $this->container->cancelReservation()->cancelReservation(
+            $this->concertId->asString(),
+            $this->reservationId->asInt()
         );
     }
 }

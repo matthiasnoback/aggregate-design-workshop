@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace TicketMill\Infrastructure;
 
-use Assert\Assertion;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\ExpectationFailedException;
 use TicketMill\Application\Notifications\Mailer;

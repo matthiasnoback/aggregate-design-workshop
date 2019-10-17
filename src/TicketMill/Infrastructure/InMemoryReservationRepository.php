@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace TicketMill\Infrastructure;
 
 use Ramsey\Uuid\Uuid;
+use TicketMill\Domain\Model\Reservation\ReservationId;
 use TicketMill\Domain\Model\Reservation\CouldNotFindReservation;
 use TicketMill\Domain\Model\Reservation\Reservation;
-use TicketMill\Domain\Model\Reservation\ReservationId;
 use TicketMill\Domain\Model\Reservation\ReservationRepository;
 
 final class InMemoryReservationRepository implements ReservationRepository

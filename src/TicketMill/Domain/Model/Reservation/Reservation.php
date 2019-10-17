@@ -5,6 +5,7 @@ namespace TicketMill\Domain\Model\Reservation;
 
 use TicketMill\Domain\Model\Common\EmailAddress;
 use TicketMill\Domain\Model\Concert\ConcertId;
+use TicketMill\Domain\Model\Reservation\ReservationId;
 
 /**
  * @deprecated Only use this when you arrived at Assignment 5

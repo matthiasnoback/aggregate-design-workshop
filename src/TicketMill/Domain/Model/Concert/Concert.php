@@ -54,7 +54,12 @@ final class Concert
     {
     }
 
-    public function makeReservation(EmailAddress $emailAddress, int $numberOfSeats): void
+    public function makeReservation(EmailAddress $emailAddress,
+        int $numberOfSeats
+    ): ReservationId {
+    }
+
+    public function cancelReservation(ReservationId $reservationId): void
     {
     }
 
