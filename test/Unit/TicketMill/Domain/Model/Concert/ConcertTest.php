@@ -3,6 +3,7 @@
 namespace TicketMill\Domain\Model\Concert;
 
 use InvalidArgumentException;
+use TicketMill\Domain\Model\Reservation\ReservationId;
 use Utility\AggregateTestCase;
 
 final class ConcertTest extends AggregateTestCase
@@ -122,6 +123,34 @@ final class ConcertTest extends AggregateTestCase
         );
     }
 
+    /**
+     * @test
+     */
+    public function it_accepts_a_reservation_if_enough_seats_are_available(): void
+    {
+        $concert = $this->aConcertWithSeatsAvailable(4);
+        $concert->processReservation($this->aReservationId(), 4);
+
+        self::assertArrayContainsObjectOfClass(
+            ReservationWasAccepted::class,
+            $concert->releaseEvents()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_rejects_a_reservation_if_not_enough_seats_are_available(): void
+    {
+        $concert = $this->aConcertWithSeatsAvailable(5);
+        $concert->processReservation($this->aReservationId(), 6);
+
+        self::assertArrayContainsObjectOfClass(
+            ReservationWasRejected::class,
+            $concert->releaseEvents()
+        );
+    }
+
     private function aConcertId(): ConcertId
     {
         return ConcertId::fromString('de939fac-7777-449a-9360-b66f3cc3daec');
@@ -147,6 +176,16 @@ final class ConcertTest extends AggregateTestCase
         );
     }
 
+    private function aConcertWithSeatsAvailable(int $numberOfSeats): Concert
+    {
+        return Concert::plan(
+            $this->aConcertId(),
+            $this->aName(),
+            $this->aDate(),
+            $numberOfSeats
+        );
+    }
+
     private function aConcert(): Concert
     {
         return Concert::plan(
@@ -160,5 +199,10 @@ final class ConcertTest extends AggregateTestCase
     private function aNumberOfSeats(): int
     {
         return 10;
+    }
+
+    private function aReservationId(): ReservationId
+    {
+        return ReservationId::fromString('70ee157b-7125-4501-836f-d3b94b2aa2a8');
     }
 }

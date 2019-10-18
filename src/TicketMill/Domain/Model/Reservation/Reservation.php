@@ -49,6 +49,7 @@ final class Reservation
 
         $this->recordThat(
             new ReservationWasMade(
+                $reservationId,
                 $concertId,
                 $emailAddress,
                 $numberOfSeats
@@ -82,6 +83,12 @@ final class Reservation
         }
 
         $this->wasCancelled = true;
-        $this->recordThat(new ReservationWasCancelled($this->concertId, $this->numberOfSeats));
+        $this->recordThat(
+            new ReservationWasCancelled(
+                $this->reservationId,
+                $this->concertId,
+                $this->numberOfSeats
+            )
+        );
     }
 }

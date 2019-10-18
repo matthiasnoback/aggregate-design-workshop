@@ -9,6 +9,11 @@ use TicketMill\Domain\Model\Concert\ConcertId;
 final class ReservationWasMade
 {
     /**
+     * @var ReservationId
+     */
+    private $reservationId;
+
+    /**
      * @var ConcertId
      */
     private $concertId;
@@ -24,13 +29,20 @@ final class ReservationWasMade
     private $numberOfSeats;
 
     public function __construct(
+        ReservationId $reservationId,
         ConcertId $concertId,
         EmailAddress $emailAddress,
         int $numberOfSeats
     ) {
+        $this->reservationId = $reservationId;
         $this->concertId = $concertId;
         $this->emailAddress = $emailAddress;
         $this->numberOfSeats = $numberOfSeats;
+    }
+
+    public function reservationId(): ReservationId
+    {
+        return $this->reservationId;
     }
 
     public function concertId(): ConcertId
