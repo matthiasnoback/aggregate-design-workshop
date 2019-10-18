@@ -3,6 +3,7 @@
 namespace TicketMill\Domain\Model\Concert;
 
 use InvalidArgumentException;
+use RuntimeException;
 use TicketMill\Domain\Model\Common\EmailAddress;
 use Utility\AggregateTestCase;
 
@@ -184,6 +185,22 @@ final class ConcertTest extends AggregateTestCase
         $concert->cancelReservation($reservationId);
 
         self::assertEquals(10 - 4, $concert->numberOfSeatsAvailable());
+    }
+
+    /**
+     * @test
+     */
+    public function it_will_fail_to_cancel_a_reservation_if_the_reservation_does_not_exist(): void
+    {
+        $this->markTestIncomplete('Assignment 4');
+
+        $concert = $this->aConcert();
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('not found');
+
+        // No reservations have been made, so reservation 1 does not exist
+        $concert->cancelReservation(ReservationId::fromInt(1));
     }
 
     private function aConcertId(): ConcertId
