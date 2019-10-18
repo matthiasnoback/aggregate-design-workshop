@@ -22,7 +22,7 @@ final class ConcertTest extends AggregateTestCase
             $this->aConcertId(),
             $anEmptyName = '',
             $this->aDate(),
-            10
+            $this->aNumberOfSeats()
         );
     }
 
