@@ -4,14 +4,13 @@ declare(strict_types=1);
 namespace TicketMill\Domain\Model\Reservation;
 
 use TicketMill\Domain\Model\Common\EmailAddress;
+use TicketMill\Domain\Model\Common\EventRecording;
 use TicketMill\Domain\Model\Concert\ConcertId;
-use TicketMill\Domain\Model\Reservation\ReservationId;
 
-/**
- * @deprecated Only use this when you arrived at Assignment 5
- */
 final class Reservation
 {
+    use EventRecording;
+
     /**
      * @var ReservationId
      */
@@ -32,6 +31,11 @@ final class Reservation
      */
     private $numberOfSeats;
 
+    /**
+     * @var bool
+     */
+    private $wasCancelled = false;
+
     private function __construct(
         ReservationId $reservationId,
         ConcertId $concertId,
@@ -42,6 +46,14 @@ final class Reservation
         $this->concertId = $concertId;
         $this->emailAddress = $emailAddress;
         $this->numberOfSeats = $numberOfSeats;
+
+        $this->recordThat(
+            new ReservationWasMade(
+                $concertId,
+                $emailAddress,
+                $numberOfSeats
+            )
+        );
     }
 
     public static function make(
@@ -61,5 +73,15 @@ final class Reservation
     public function reservationId(): ReservationId
     {
         return $this->reservationId;
+    }
+
+    public function cancel()
+    {
+        if ($this->wasCancelled) {
+            return;
+        }
+
+        $this->wasCancelled = true;
+        $this->recordThat(new ReservationWasCancelled($this->concertId, $this->numberOfSeats));
     }
 }

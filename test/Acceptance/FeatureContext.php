@@ -9,7 +9,7 @@ use Behat\Behat\Tester\Exception\PendingException;
 use BehatExpectException\ExpectException;
 use Exception;
 use TicketMill\Domain\Model\Concert\ConcertId;
-use TicketMill\Domain\Model\Concert\ReservationId;
+use TicketMill\Domain\Model\Reservation\ReservationId;
 use TicketMill\Infrastructure\ServiceContainer;
 
 final class FeatureContext implements Context
@@ -126,7 +126,7 @@ final class FeatureContext implements Context
 
         $this->container->cancelReservation()->cancelReservation(
             $this->concertId->asString(),
-            $this->reservationId->asInt()
+            $this->reservationId->asString()
         );
     }
 }

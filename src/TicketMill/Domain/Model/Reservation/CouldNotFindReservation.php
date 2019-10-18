@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace TicketMill\Domain\Model\Reservation;
 
 use RuntimeException;
-use TicketMill\Domain\Model\Reservation\ReservationId;
 
 final class CouldNotFindReservation extends RuntimeException
 {

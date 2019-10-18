@@ -1,21 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace TicketMill\Domain\Model\Concert;
+namespace TicketMill\Domain\Model\Reservation;
 
-use TicketMill\Domain\Model\Common\EmailAddress;
+use TicketMill\Domain\Model\Concert\ConcertId;
 
-final class ReservationWasMade
+final class ReservationWasCancelled
 {
     /**
      * @var ConcertId
      */
     private $concertId;
-
-    /**
-     * @var EmailAddress
-     */
-    private $emailAddress;
 
     /**
      * @var int
@@ -24,22 +19,15 @@ final class ReservationWasMade
 
     public function __construct(
         ConcertId $concertId,
-        EmailAddress $emailAddress,
         int $numberOfSeats
     ) {
         $this->concertId = $concertId;
-        $this->emailAddress = $emailAddress;
         $this->numberOfSeats = $numberOfSeats;
     }
 
     public function concertId(): ConcertId
     {
         return $this->concertId;
-    }
-
-    public function emailAddress(): EmailAddress
-    {
-        return $this->emailAddress;
     }
 
     public function numberOfSeats(): int
