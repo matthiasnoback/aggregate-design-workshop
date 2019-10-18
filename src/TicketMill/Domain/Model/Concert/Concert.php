@@ -35,6 +35,11 @@ final class Concert
      */
     private $numberOfSeats;
 
+    /**
+     * @var int
+     */
+    private $numberOfSeatsAvailable;
+
     private function __construct(
         ConcertId $concertId,
         string $name,
@@ -48,6 +53,7 @@ final class Concert
         $this->date = $date;
         $this->name = $name;
         $this->numberOfSeats = $numberOfSeats;
+        $this->numberOfSeatsAvailable = $numberOfSeats;
     }
 
     public static function plan(
@@ -95,7 +101,16 @@ final class Concert
 
     public function numberOfSeatsAvailable(): int
     {
-        // TODO make this return the correct value, taking into account the reservations
-        return $this->numberOfSeats;
+        return $this->numberOfSeatsAvailable;
+    }
+
+    public function decreaseNumberOfSeatsAvailable(int $numberOfSeats): void
+    {
+        $this->numberOfSeatsAvailable -= $numberOfSeats;
+    }
+
+    public function increaseNumberOfSeatsAvailable(int $numberOfSeats): void
+    {
+        $this->numberOfSeatsAvailable += $numberOfSeats;
     }
 }
