@@ -22,8 +22,6 @@ final class Concert
         int $numberOfSeats
     ) {
         $this->concertId = $concertId;
-
-        // TODO assign more properties
     }
 
     public static function plan(
