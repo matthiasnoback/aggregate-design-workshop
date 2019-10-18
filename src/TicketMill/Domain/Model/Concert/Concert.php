@@ -26,6 +26,11 @@ final class Concert
      */
     private $date;
 
+    /**
+     * @var bool
+     */
+    private $isCancelled = false;
+
     private function __construct(
         ConcertId $concertId,
         string $name,
@@ -61,16 +66,26 @@ final class Concert
 
     public function reschedule(ScheduledDate $newDate): void
     {
+        if ($this->isCancelled) {
+            throw CouldNotRescheduleConcert::becauseItWasAlreadyCancelled();
+        }
+
         if ($this->date->equals($newDate)) {
             return;
         }
 
         $this->date = $newDate;
-        $this->events[] = new ConcertWasRescheduled();
+        $this->recordThat(new ConcertWasRescheduled());
     }
 
     public function cancel(): void
     {
+        if ($this->isCancelled) {
+            return;
+        }
+
+        $this->isCancelled = true;
+        $this->recordThat(new ConcertWasCancelled());
     }
 
     public function makeReservation(EmailAddress $emailAddress,
