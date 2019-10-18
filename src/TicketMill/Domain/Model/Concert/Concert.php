@@ -55,6 +55,8 @@ final class Concert
         $this->name = $name;
         $this->numberOfSeats = $numberOfSeats;
         $this->numberOfSeatsAvailable = $numberOfSeats;
+
+        $this->recordThat(new ConcertWasPlanned($concertId, $numberOfSeats));
     }
 
     public static function plan(
@@ -105,10 +107,12 @@ final class Concert
         return $this->numberOfSeatsAvailable;
     }
 
-    public function processReservation(ReservationId $reservationId, int $numberOfSeats): void
+    public function processReservation(
+        ReservationId $reservationId,
+        int $numberOfSeats): void
     {
         if ($this->numberOfSeatsAvailable >= $numberOfSeats) {
-            $this->recordThat(new ReservationWasAccepted($reservationId));
+            $this->recordThat(new ReservationWasAccepted($reservationId, $this->concertId, $numberOfSeats));
             $this->numberOfSeatsAvailable -= $numberOfSeats;
         } else {
             $this->recordThat(new ReservationWasRejected($reservationId));

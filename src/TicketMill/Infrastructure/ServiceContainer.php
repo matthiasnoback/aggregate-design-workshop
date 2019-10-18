@@ -10,7 +10,9 @@ use TicketMill\Application\MakeReservation;
 use TicketMill\Application\Notifications\SendMail;
 use TicketMill\Application\PlanConcert;
 use TicketMill\Application\ProcessReservation;
+use TicketMill\Application\UpdateAvailableSeats;
 use TicketMill\Domain\Model\Concert\ConcertRepository;
+use TicketMill\Domain\Model\Concert\ConcertWasPlanned;
 use TicketMill\Domain\Model\Concert\ReservationWasAccepted;
 use TicketMill\Domain\Model\Reservation\ReservationWasCancelled;
 use TicketMill\Domain\Model\Reservation\ReservationWasConfirmed;
@@ -66,6 +68,20 @@ final class ServiceContainer
             [new SendMail($this->mailer()), 'whenReservationWasConfirmed']
         );
 
+        $updateAvailableSeats = $this->updateAvailableSeats();
+        $eventDispatcher->registerSubscriber(
+            ConcertWasPlanned::class,
+            [$updateAvailableSeats, 'whenConcertWasPlanned']
+        );
+        $eventDispatcher->registerSubscriber(
+            ReservationWasAccepted::class,
+            [$updateAvailableSeats, 'whenReservationWasAccepted']
+        );
+        $eventDispatcher->registerSubscriber(
+            ReservationWasCancelled::class,
+            [$updateAvailableSeats, 'whenReservationWasCancelled']
+        );
+
         return $eventDispatcher;
     }
 
@@ -88,5 +104,12 @@ final class ServiceContainer
         static $service;
 
         return $service ?? $service = new MailerSpy();
+    }
+
+    private function updateAvailableSeats(): UpdateAvailableSeats
+    {
+        static $service;
+
+        return $service ?? $service = new UpdateAvailableSeats();
     }
 }
