@@ -101,7 +101,7 @@ final class ConcertTest extends AggregateTestCase
 
         $concert->cancel();
 
-        // TODO: Verify that the concert has indeed been cancelled
+        $this->fail('TODO: Remove this statement; verify that the concert has indeed been cancelled');
     }
 
     /**
@@ -117,7 +117,7 @@ final class ConcertTest extends AggregateTestCase
 
         $concert->cancel();
 
-        self::assertCount(0, $concert->releaseEvents());
+        $this->fail('TODO: Remove this statement; verify that the concert has not been cancelled again');
     }
 
     /**
