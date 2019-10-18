@@ -24,4 +24,9 @@ final class ReservationId
     {
         return $this->reservationId;
     }
+
+    public function next(): self
+    {
+        return new self($this->reservationId + 1);
+    }
 }
