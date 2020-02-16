@@ -28,13 +28,13 @@ final class CancelReservation
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function cancelReservation(string $concertId, int $reservationId): void
+    public function cancelReservation(string $concertId, string $reservationId): void
     {
         $concert = $this->concertRepository->getById(
             ConcertId::fromString($concertId)
         );
 
-        $concert->cancelReservation(ReservationId::fromInt($reservationId));
+        $concert->cancelReservation(ReservationId::fromString($reservationId));
 
         $this->concertRepository->save($concert);
 

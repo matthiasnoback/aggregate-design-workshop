@@ -33,7 +33,10 @@ final class MakeReservation
     {
         $concert = $this->concertRepository->getById(ConcertId::fromString($concertId));
 
-        $reservationId = $concert->makeReservation(
+        $reservationId = $this->concertRepository->nextReservationId();
+
+        $concert->makeReservation(
+            $reservationId,
             EmailAddress::fromString($emailAddress),
             $numberOfSeats
         );

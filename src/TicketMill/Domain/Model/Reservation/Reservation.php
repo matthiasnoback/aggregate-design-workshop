@@ -4,14 +4,17 @@ declare(strict_types=1);
 namespace TicketMill\Domain\Model\Reservation;
 
 use TicketMill\Domain\Model\Common\EmailAddress;
+use TicketMill\Domain\Model\Common\EventRecording;
 use TicketMill\Domain\Model\Concert\ConcertId;
-use TicketMill\Domain\Model\Reservation\ReservationId;
+use TicketMill\Domain\Model\Concert\ReservationId;
 
 /**
  * @deprecated Only use this when you arrived at Assignment 5
  */
 final class Reservation
 {
+    use EventRecording;
+
     /**
      * @var ReservationId
      */
@@ -61,5 +64,9 @@ final class Reservation
     public function reservationId(): ReservationId
     {
         return $this->reservationId;
+    }
+
+    public function cancel(): void
+    {
     }
 }

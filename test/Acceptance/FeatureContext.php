@@ -126,7 +126,7 @@ final class FeatureContext implements Context
 
         $this->container->cancelReservation()->cancelReservation(
             $this->concertId->asString(),
-            $this->reservationId->asInt()
+            $this->reservationId->asString()
         );
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace TicketMill\Domain\Model\Reservation;
+namespace TicketMill\Domain\Model\Concert;
 
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;

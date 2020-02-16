@@ -130,7 +130,7 @@ final class ConcertTest extends AggregateTestCase
 
         $concert = $this->concertWithNumberOfSeatsAvailable(10);
 
-        $concert->makeReservation($this->anEmailAddress(), 3);
+        $concert->makeReservation($this->aReservationId(), $this->anEmailAddress(), 3);
 
         self::assertArrayContainsObjectOfClass(
             ReservationWasMade::class,
@@ -151,7 +151,7 @@ final class ConcertTest extends AggregateTestCase
         $this->expectException(CouldNotReserveSeats::class);
         $this->expectExceptionMessage('Not enough seats were available');
 
-        $concert->makeReservation($this->anEmailAddress(), $moreThanAvailable = 11);
+        $concert->makeReservation($this->aReservationId(), $this->anEmailAddress(), $moreThanAvailable = 11);
     }
 
     /**
@@ -162,13 +162,13 @@ final class ConcertTest extends AggregateTestCase
         $this->markTestIncomplete('Assignment 4');
 
         $concert = $this->concertWithNumberOfSeatsAvailable(10);
-        $concert->makeReservation($this->anEmailAddress(), 7);
+        $concert->makeReservation($this->aReservationId(), $this->anEmailAddress(), 7);
         self::assertEquals(3, $concert->numberOfSeatsAvailable());
 
         $this->expectException(CouldNotReserveSeats::class);
         $this->expectExceptionMessage('Not enough seats were available');
 
-        $concert->makeReservation($this->anEmailAddress(), $moreThanAvailable = 6);
+        $concert->makeReservation($this->anotherReservationId(), $this->anEmailAddress(), $moreThanAvailable = 6);
     }
 
     /**
@@ -179,8 +179,9 @@ final class ConcertTest extends AggregateTestCase
         $this->markTestIncomplete('Assignment 4');
 
         $concert = $this->concertWithNumberOfSeatsAvailable(10);
-        $concert->makeReservation($this->anEmailAddress(), 4);
-        $reservationId = $concert->makeReservation($this->anEmailAddress(), 3);
+        $concert->makeReservation($this->aReservationId(), $this->anEmailAddress(), 4);
+        $reservationId = $this->anotherReservationId();
+        $concert->makeReservation($reservationId, $this->anEmailAddress(), 3);
 
         $concert->cancelReservation($reservationId);
 
@@ -205,7 +206,7 @@ final class ConcertTest extends AggregateTestCase
         $this->expectExceptionMessage('not found');
 
         // No reservations have been made, so reservation 1 does not exist
-        $concert->cancelReservation(ReservationId::fromInt(1));
+        $concert->cancelReservation($this->aReservationId());
     }
 
     private function aConcertId(): ConcertId
@@ -261,5 +262,15 @@ final class ConcertTest extends AggregateTestCase
     private function aNumberOfSeats(): int
     {
         return 10;
+    }
+
+    private function aReservationId(): ReservationId
+    {
+        return ReservationId::fromString('48ebab9c-1be8-42e5-b87a-6adda38d9116');
+    }
+
+    private function anotherReservationId(): ReservationId
+    {
+        return ReservationId::fromString('dc5998cb-34fa-4589-a4a1-33f3f76a812a');
     }
 }

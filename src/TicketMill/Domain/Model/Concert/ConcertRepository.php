@@ -11,5 +11,7 @@ interface ConcertRepository
 
     public function nextIdentity(): ConcertId;
 
+    public function nextReservationId(): ReservationId;
+
     public function save(Concert $concert): void;
 }

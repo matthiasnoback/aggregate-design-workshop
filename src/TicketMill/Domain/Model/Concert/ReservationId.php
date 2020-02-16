@@ -3,25 +3,28 @@ declare(strict_types=1);
 
 namespace TicketMill\Domain\Model\Concert;
 
+use Assert\Assertion;
+
 final class ReservationId
 {
     /**
-     * @var int
+     * @var string
      */
-    private $reservationId;
+    private $id;
 
-    private function __construct(int $reservationId)
+    private function __construct(string $id)
     {
-        $this->reservationId = $reservationId;
+        Assertion::uuid($id);
+        $this->id = $id;
     }
 
-    public static function fromInt(int $reservationId): self
+    public static function fromString(string $id): self
     {
-        return new self($reservationId);
+        return new self($id);
     }
 
-    public function asInt(): int
+    public function asString(): string
     {
-        return $this->reservationId;
+        return $this->id;
     }
 }

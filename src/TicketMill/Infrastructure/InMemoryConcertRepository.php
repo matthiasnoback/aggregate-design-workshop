@@ -8,6 +8,7 @@ use TicketMill\Domain\Model\Concert\Concert;
 use TicketMill\Domain\Model\Concert\ConcertId;
 use TicketMill\Domain\Model\Concert\ConcertRepository;
 use TicketMill\Domain\Model\Concert\CouldNotFindConcert;
+use TicketMill\Domain\Model\Concert\ReservationId;
 
 final class InMemoryConcertRepository implements ConcertRepository
 {
@@ -31,6 +32,13 @@ final class InMemoryConcertRepository implements ConcertRepository
     public function nextIdentity(): ConcertId
     {
         return ConcertId::fromString(
+            Uuid::uuid4()->toString()
+        );
+    }
+
+    public function nextReservationId(): ReservationId
+    {
+        return ReservationId::fromString(
             Uuid::uuid4()->toString()
         );
     }
