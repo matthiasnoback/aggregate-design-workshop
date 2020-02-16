@@ -184,6 +184,11 @@ final class ConcertTest extends AggregateTestCase
 
         $concert->cancelReservation($reservationId);
 
+        self::assertArrayContainsObjectOfClass(
+            ReservationWasCancelled::class,
+            $concert->releaseEvents()
+        );
+
         self::assertEquals(10 - 4, $concert->numberOfSeatsAvailable());
     }
 
