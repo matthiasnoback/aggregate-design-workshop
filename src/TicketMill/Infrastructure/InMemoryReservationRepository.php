@@ -5,7 +5,7 @@ namespace TicketMill\Infrastructure;
 
 use Ramsey\Uuid\Uuid;
 use TicketMill\Domain\Model\Concert\ReservationId;
-use TicketMill\Domain\Model\Reservation\CouldNotFindReservation;
+use TicketMill\Domain\Model\Concert\CouldNotFindReservation;
 use TicketMill\Domain\Model\Reservation\Reservation;
 use TicketMill\Domain\Model\Reservation\ReservationRepository;
 
