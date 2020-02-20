@@ -14,6 +14,11 @@ use TicketMill\Domain\Model\Reservation\ReservationRepository;
 
 final class ServiceContainer
 {
+    /**
+     * @var EventDispatcher | null
+     */
+    private $eventDispatcher;
+
     public function planConcertService(): PlanConcert
     {
         return new PlanConcert($this->concertRepository(), $this->eventDispatcher());
@@ -31,13 +36,15 @@ final class ServiceContainer
 
     private function eventDispatcher(): EventDispatcher
     {
-        $eventDispatcher = new EventDispatcher();
-        $eventDispatcher->registerSubscriber(
-            ReservationWasMade::class,
-            [new SendMail($this->mailer()), 'whenReservationWasMade']
-        );
+        if ($this->eventDispatcher === null) {
+            $this->eventDispatcher = new EventDispatcher();
+            $this->eventDispatcher->registerSubscriber(
+                ReservationWasMade::class,
+                [new SendMail($this->mailer()), 'whenReservationWasMade']
+            );
+        }
 
-        return $eventDispatcher;
+        return $this->eventDispatcher;
     }
 
     private function concertRepository(): ConcertRepository
