@@ -87,7 +87,7 @@ final class ConcertTest extends AggregateTestCase
         $this->expectException(CouldNotRescheduleConcert::class);
         $this->expectExceptionMessage('cancelled');
 
-        $aCancelledConcert->reschedule($anotherDate = ScheduledDate::fromString('2021-10-01 20:00'));
+        $aCancelledConcert->reschedule($anotherDate = ScheduledDate::fromString('2021-11-02 20:00'));
     }
 
     /**
