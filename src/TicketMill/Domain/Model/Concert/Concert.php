@@ -5,6 +5,7 @@ namespace TicketMill\Domain\Model\Concert;
 
 use Assert\Assertion;
 use TicketMill\Domain\Model\Common\EventRecording;
+use TicketMill\Domain\Model\Reservation\ReservationId;
 
 final class Concert
 {
@@ -108,5 +109,15 @@ final class Concert
     public function increaseNumberOfAvailableSeats(int $numberOfSeats)
     {
         $this->availableSeats += $numberOfSeats;
+    }
+
+    public function processReservation(ReservationId $reservationId, int $numberOfSeats): void
+    {
+        if ($this->availableSeats >= $numberOfSeats) {
+            $this->availableSeats -= $numberOfSeats;
+            $this->recordThat(new ReservationWasAccepted($reservationId));
+        } else {
+            $this->recordThat(new ReservationWasRejected($reservationId));
+        }
     }
 }

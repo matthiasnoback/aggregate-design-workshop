@@ -40,6 +40,11 @@ final class ReservationWasMade
         $this->numberOfSeats = $numberOfSeats;
     }
 
+    public function reservationId(): ReservationId
+    {
+        return $this->reservationId;
+    }
+
     public function concertId(): ConcertId
     {
         return $this->concertId;

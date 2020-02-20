@@ -8,7 +8,7 @@ use TicketMill\Application\CancelReservation;
 use TicketMill\Application\MakeReservation;
 use TicketMill\Application\Notifications\SendMail;
 use TicketMill\Application\PlanConcert;
-use TicketMill\Application\UpdateAvailableSeats;
+use TicketMill\Application\ProcessReservation;
 use TicketMill\Domain\Model\Concert\ConcertRepository;
 use TicketMill\Domain\Model\Reservation\ReservationWasCancelled;
 use TicketMill\Domain\Model\Reservation\ReservationWasMade;
@@ -16,6 +16,11 @@ use TicketMill\Domain\Model\Reservation\ReservationRepository;
 
 final class ServiceContainer
 {
+    /**
+     * @var EventDispatcher | null
+     */
+    private $eventDispatcher;
+
     public function planConcertService(): PlanConcert
     {
         return new PlanConcert($this->concertRepository(), $this->eventDispatcher());
@@ -37,26 +42,29 @@ final class ServiceContainer
 
     private function eventDispatcher(): EventDispatcher
     {
-        $eventDispatcher = new EventDispatcher();
-        $eventDispatcher->registerSubscriber(
-            ReservationWasMade::class,
-            [new SendMail($this->mailer()), 'whenReservationWasMade']
-        );
-        $eventDispatcher->registerSubscriber(
-            ReservationWasMade::class,
-            [$this->updateAvailableSeats(), 'whenReservationWasMade']
-        );
-        $eventDispatcher->registerSubscriber(
-            ReservationWasCancelled::class,
-            [$this->updateAvailableSeats(), 'whenReservationWasCancelled']
-        );
+        if ($this->eventDispatcher === null) {
+            $this->eventDispatcher = new EventDispatcher();
 
-        return $eventDispatcher;
+            $this->eventDispatcher->registerSubscriber(
+                ReservationWasMade::class,
+                [new SendMail($this->mailer()), 'whenReservationWasMade']
+            );
+            $this->eventDispatcher->registerSubscriber(
+                ReservationWasMade::class,
+                [$this->updateAvailableSeats(), 'whenReservationWasMade']
+            );
+            $this->eventDispatcher->registerSubscriber(
+                ReservationWasCancelled::class,
+                [$this->updateAvailableSeats(), 'whenReservationWasCancelled']
+            );
+        }
+
+        return $this->eventDispatcher;
     }
 
-    private function updateAvailableSeats(): UpdateAvailableSeats
+    private function updateAvailableSeats(): ProcessReservation
     {
-        return new UpdateAvailableSeats($this->concertRepository());
+        return new ProcessReservation($this->concertRepository(), $this->eventDispatcher());
     }
 
     private function concertRepository(): ConcertRepository

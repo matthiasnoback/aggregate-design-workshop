@@ -3,6 +3,7 @@
 namespace TicketMill\Domain\Model\Concert;
 
 use InvalidArgumentException;
+use TicketMill\Domain\Model\Reservation\ReservationId;
 use Utility\AggregateTestCase;
 
 final class ConcertTest extends AggregateTestCase
@@ -127,17 +128,46 @@ final class ConcertTest extends AggregateTestCase
     /**
      * @test
      */
-    public function the_number_of_available_seats_can_be_increased_or_decrease(): void
+    public function if_there_are_enough_seats_available_a_reservation_will_be_accepted(): void
     {
         $concert = $this->aConcertWithNumberOfSeats(10);
 
-        $concert->increaseNumberOfAvailableSeats(5);
+        $concert->processReservation($this->someReservationId(), 5);
 
-        self::assertEquals(15, $concert->numberOfSeatsAvailable());
+        self::assertArrayContainsObjectOfClass(
+            ReservationWasAccepted::class,
+            $concert->releaseEvents()
+        );
+    }
 
-        $concert->decreaseNumberOfAvailableSeats(3);
+    /**
+     * @test
+     */
+    public function if_there_are_not_enough_seats_available_a_reservation_will_be_rejected(): void
+    {
+        $concert = $this->aConcertWithNumberOfSeats(5);
 
-        self::assertEquals(12, $concert->numberOfSeatsAvailable());
+        $concert->processReservation($this->someReservationId(), 10);
+
+        self::assertArrayContainsObjectOfClass(
+            ReservationWasRejected::class,
+            $concert->releaseEvents()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function if_there_are_exactly_enough_seats_available_a_reservation_will_be_accepted(): void
+    {
+        $concert = $this->aConcertWithNumberOfSeats(5);
+
+        $concert->processReservation($this->someReservationId(), 5);
+
+        self::assertArrayContainsObjectOfClass(
+            ReservationWasAccepted::class,
+            $concert->releaseEvents()
+        );
     }
 
     private function aConcertId(): ConcertId
@@ -188,5 +218,10 @@ final class ConcertTest extends AggregateTestCase
             $this->aDate(),
             $numberOfSeats
         );
+    }
+
+    private function someReservationId(): ReservationId
+    {
+        return ReservationId::fromString('cd2514c8-ac19-4e1c-9a8c-1204782233d9');
     }
 }
