@@ -31,4 +31,9 @@ final class Reservation
         $this->emailAddress = $emailAddress;
         $this->numberOfSeats = $numberOfSeats;
     }
+
+    public function numberOfSeats(): int
+    {
+        return $this->numberOfSeats;
+    }
 }
