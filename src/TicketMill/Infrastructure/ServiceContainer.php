@@ -5,12 +5,15 @@ namespace TicketMill\Infrastructure;
 
 use Common\EventDispatcher\EventDispatcher;
 use TicketMill\Application\CancelReservation;
+use TicketMill\Application\ConfirmReservation;
 use TicketMill\Application\MakeReservation;
 use TicketMill\Application\Notifications\SendMail;
 use TicketMill\Application\PlanConcert;
 use TicketMill\Application\ProcessReservation;
 use TicketMill\Domain\Model\Concert\ConcertRepository;
+use TicketMill\Domain\Model\Concert\ReservationWasAccepted;
 use TicketMill\Domain\Model\Reservation\ReservationWasCancelled;
+use TicketMill\Domain\Model\Reservation\ReservationWasConfirmed;
 use TicketMill\Domain\Model\Reservation\ReservationWasMade;
 use TicketMill\Domain\Model\Reservation\ReservationRepository;
 
@@ -47,11 +50,15 @@ final class ServiceContainer
 
             $this->eventDispatcher->registerSubscriber(
                 ReservationWasMade::class,
-                [new SendMail($this->mailer()), 'whenReservationWasMade']
+                [$this->updateAvailableSeats(), 'whenReservationWasMade']
             );
             $this->eventDispatcher->registerSubscriber(
-                ReservationWasMade::class,
-                [$this->updateAvailableSeats(), 'whenReservationWasMade']
+                ReservationWasAccepted::class,
+                [$this->confirmReservation(), 'whenReservationWasAccepted']
+            );
+            $this->eventDispatcher->registerSubscriber(
+                ReservationWasConfirmed::class,
+                [new SendMail($this->mailer()), 'whenReservationWasConfirmed']
             );
             $this->eventDispatcher->registerSubscriber(
                 ReservationWasCancelled::class,
@@ -86,5 +93,10 @@ final class ServiceContainer
         static $service;
 
         return $service ?? $service = new MailerSpy();
+    }
+
+    private function confirmReservation(): ConfirmReservation
+    {
+        return new ConfirmReservation($this->reservationRepository(), $this->eventDispatcher());
     }
 }

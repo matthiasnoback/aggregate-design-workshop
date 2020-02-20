@@ -80,4 +80,16 @@ final class Reservation
         $this->wasCancelled = true;
         $this->recordThat(new ReservationWasCancelled($this->reservationId, $this->concertId, $this->numberOfSeats));
     }
+
+    public function confirm()
+    {
+        $this->recordThat(
+            new ReservationWasConfirmed(
+                $this->reservationId,
+                $this->concertId,
+                $this->emailAddress,
+                $this->numberOfSeats
+            )
+        );
+    }
 }
