@@ -77,15 +77,13 @@ final class ConcertTest extends AggregateTestCase
      */
     public function it_can_not_be_rescheduled_when_it_has_been_cancelled(): void
     {
-        $this->markTestIncomplete('Assignment 3');
-
         $aCancelledConcert = $this->aConcert();
         $aCancelledConcert->cancel();
 
         $this->expectException(CouldNotRescheduleConcert::class);
         $this->expectExceptionMessage('cancelled');
 
-        $aCancelledConcert->reschedule($anotherDate = ScheduledDate::fromString('2021-10-01 20:00'));
+        $aCancelledConcert->reschedule($anotherDate = ScheduledDate::fromString('2021-10-02 20:00'));
     }
 
     /**
@@ -93,14 +91,15 @@ final class ConcertTest extends AggregateTestCase
      */
     public function it_can_be_cancelled(): void
     {
-        $this->markTestIncomplete('Assignment 3');
-
         $concert = $this->aConcert();
         $concert->releaseEvents();
 
         $concert->cancel();
 
-        $this->fail('TODO: Remove this statement; verify that the concert has indeed been cancelled');
+        self::assertArrayContainsObjectOfClass(
+            ConcertWasCancelled::class,
+            $concert->releaseEvents()
+        );
     }
 
     /**
@@ -108,15 +107,13 @@ final class ConcertTest extends AggregateTestCase
      */
     public function cancelling_the_concert_twice_has_no_effect(): void
     {
-        $this->markTestIncomplete('Assignment 3');
-
         $concert = $this->aConcert();
         $concert->cancel();
         $concert->releaseEvents(); // the first time we cancel the concert, an event will be recorded
 
         $concert->cancel();
 
-        $this->fail('TODO: Remove this statement; verify that the concert has not been cancelled again');
+        self::assertCount(0, $concert->releaseEvents());
     }
 
     /**
