@@ -6,9 +6,6 @@ namespace TicketMill\Domain\Model\Reservation;
 use TicketMill\Domain\Model\Common\EmailAddress;
 use TicketMill\Domain\Model\Common\EventRecording;
 use TicketMill\Domain\Model\Concert\ConcertId;
-use TicketMill\Domain\Model\Concert\ReservationId;
-use TicketMill\Domain\Model\Concert\ReservationWasCancelled;
-use TicketMill\Domain\Model\Concert\ReservationWasMade;
 
 final class Reservation
 {

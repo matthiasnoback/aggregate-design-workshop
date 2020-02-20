@@ -8,7 +8,7 @@ use TicketMill\Domain\Model\Common\EmailAddress;
 use TicketMill\Domain\Model\Concert\ConcertId;
 use TicketMill\Domain\Model\Concert\ConcertRepository;
 use TicketMill\Domain\Model\Concert\CouldNotReserveSeats;
-use TicketMill\Domain\Model\Concert\ReservationId;
+use TicketMill\Domain\Model\Reservation\ReservationId;
 use TicketMill\Domain\Model\Reservation\Reservation;
 use TicketMill\Domain\Model\Reservation\ReservationRepository;
 
