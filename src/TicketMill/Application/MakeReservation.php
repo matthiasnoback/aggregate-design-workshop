@@ -7,7 +7,10 @@ use Common\EventDispatcher\EventDispatcher;
 use TicketMill\Domain\Model\Common\EmailAddress;
 use TicketMill\Domain\Model\Concert\ConcertId;
 use TicketMill\Domain\Model\Concert\ConcertRepository;
+use TicketMill\Domain\Model\Concert\CouldNotReserveSeats;
 use TicketMill\Domain\Model\Concert\ReservationId;
+use TicketMill\Domain\Model\Reservation\Reservation;
+use TicketMill\Domain\Model\Reservation\ReservationRepository;
 
 final class MakeReservation
 {
@@ -17,33 +20,45 @@ final class MakeReservation
     private $concertRepository;
 
     /**
+     * @var ReservationRepository
+     */
+    private $reservationRepository;
+
+    /**
      * @var EventDispatcher
      */
     private $eventDispatcher;
 
     public function __construct(
         ConcertRepository $concertRepository,
+        ReservationRepository $reservationRepository,
         EventDispatcher $eventDispatcher
     ) {
         $this->concertRepository = $concertRepository;
         $this->eventDispatcher = $eventDispatcher;
+        $this->reservationRepository = $reservationRepository;
     }
 
     public function makeReservation(string $concertId, string $emailAddress, int $numberOfSeats): ReservationId
     {
         $concert = $this->concertRepository->getById(ConcertId::fromString($concertId));
 
-        $reservationId = $this->concertRepository->nextReservationId();
+        if ($concert->numberOfSeatsAvailable() < $numberOfSeats) {
+            throw CouldNotReserveSeats::becauseNotEnoughSeatsWereAvailable($numberOfSeats);
+        }
 
-        $concert->makeReservation(
+        $reservationId = $this->reservationRepository->nextIdentity();
+
+        $reservation = Reservation::make(
             $reservationId,
+            $concert->concertId(),
             EmailAddress::fromString($emailAddress),
             $numberOfSeats
         );
 
-        $this->concertRepository->save($concert);
+        $this->reservationRepository->save($reservation);
 
-        $this->eventDispatcher->dispatchAll($concert->releaseEvents());
+        $this->eventDispatcher->dispatchAll($reservation->releaseEvents());
 
         return $reservationId;
     }
