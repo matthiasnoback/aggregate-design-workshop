@@ -36,6 +36,11 @@ final class Reservation
      */
     private $wasCancelled = false;
 
+    /**
+     * @var bool
+     */
+    private $wasConfirmed = false;
+
     private function __construct(
         ReservationId $reservationId,
         ConcertId $concertId,
@@ -83,6 +88,8 @@ final class Reservation
 
     public function confirm()
     {
+        $this->wasConfirmed = true;
+
         $this->recordThat(
             new ReservationWasConfirmed(
                 $this->reservationId,
@@ -91,5 +98,10 @@ final class Reservation
                 $this->numberOfSeats
             )
         );
+    }
+
+    public function wasConfirmed(): bool
+    {
+        return $this->wasConfirmed;
     }
 }

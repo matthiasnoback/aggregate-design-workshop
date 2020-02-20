@@ -81,7 +81,7 @@ final class ServiceContainer
         return $service ?? $service = new InMemoryConcertRepository();
     }
 
-    private function reservationRepository(): ReservationRepository
+    public function reservationRepository(): ReservationRepository
     {
         static $service;
 
