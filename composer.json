@@ -8,10 +8,10 @@
     "require-dev": {
         "behat/behat": "^3.4",
         "phpunit/phpunit": "^7.0",
-        "phpstan/phpstan": "^0.10.3",
-        "phpstan/phpstan-beberlei-assert": "^0.10.0",
-        "phpstan/phpstan-phpunit": "^0.10.0",
-        "matthiasnoback/behat-expect-exception": "^0.2.0"
+        "matthiasnoback/behat-expect-exception": "^0.2.0",
+        "phpstan/phpstan": "^0.12.25",
+        "phpstan/phpstan-beberlei-assert": "^0.12.2",
+        "phpstan/phpstan-phpunit": "^0.12.8"
     },
     "require": {
         "php": "^7.1",

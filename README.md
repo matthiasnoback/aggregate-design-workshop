@@ -32,6 +32,7 @@
   export HOST_UID=$(id -u)
   ```
 - Clone this repository and `cd` into it.
+- Run `docker-compose pull`
 - Run `docker/composer.sh install --prefer-dist` to install the project's dependencies.
 
 ### Usage

@@ -23,7 +23,7 @@ final class ScheduledDate
         $this->date = $date;
     }
 
-    public static function fromString(string $date)
+    public static function fromString(string $date): self
     {
         return new self($date);
     }

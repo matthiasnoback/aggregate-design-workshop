@@ -39,7 +39,7 @@ final class FeatureContext implements Context
     /**
      * @BeforeScenario
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->container = new ServiceContainer();
     }
@@ -95,7 +95,7 @@ final class FeatureContext implements Context
     /**
      * @Then I should receive an email on the provided address saying: :message
      */
-    public function iShouldReceiveAnEmailSaying(string $messageContains)
+    public function iShouldReceiveAnEmailSaying(string $messageContains): void
     {
         Assertion::string($this->emailAddress);
 

@@ -2,10 +2,16 @@ version: '3'
 
 services:
     php:
-        image: matthiasnoback/advanced_testing_workshop_devtools
+        build: docker/php/
+        image: matthiasnoback/aggregate-design-workshop-php
         volumes:
-            - ./:/opt:cached
-            - ~/.composer:/home/.composer:cached
+            - ./:/app:cached
         environment:
             COMPOSER_HOME: /home/.composer
         user: ${HOST_UID}:${HOST_GID}
+
+    composer:
+        image: composer:latest
+        user: ${HOST_UID}:${HOST_GID}
+        volumes:
+            - ./:/app:cached

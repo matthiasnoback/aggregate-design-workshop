@@ -7,8 +7,14 @@ use Assert\Assertion;
 
 trait EventRecording
 {
+    /**
+     * @var array<object>
+     */
     private $events = [];
 
+    /**
+     * @param object $event
+     */
     final private function recordThat($event): void
     {
         Assertion::isObject($event, 'An event should be an object');
@@ -17,7 +23,7 @@ trait EventRecording
     }
 
     /**
-     * @return array&object[]
+     * @return array<object>
      */
     final public function releaseEvents(): array
     {

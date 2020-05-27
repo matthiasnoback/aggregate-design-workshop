@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 vendor/bin/phpstan analyse
 vendor/bin/phpunit --testsuite unit

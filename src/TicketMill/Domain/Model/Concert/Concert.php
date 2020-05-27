@@ -63,5 +63,6 @@ final class Concert
 
     public function numberOfSeatsAvailable(): int
     {
+        return 0;
     }
 }
