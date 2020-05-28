@@ -30,6 +30,11 @@ final class Concert
      */
     private $numberOfSeats;
 
+    /**
+     * @var int
+     */
+    private $numberOfSeatsReserved = 0;
+
     private function __construct(
         ConcertId $concertId,
         string $name,
@@ -91,6 +96,16 @@ final class Concert
 
     public function numberOfSeatsAvailable(): int
     {
-        return $this->numberOfSeats;
+        return $this->numberOfSeats - $this->numberOfSeatsReserved;
+    }
+
+    public function processReservation(int $numberOfSeats): void
+    {
+        $this->numberOfSeatsReserved += $numberOfSeats;
+    }
+
+    public function processCancellation(int $numberOfSeats): void
+    {
+        $this->numberOfSeatsReserved -= $numberOfSeats;
     }
 }
