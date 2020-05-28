@@ -31,7 +31,7 @@ final class ServiceContainer
 
     public function cancelReservation(): CancelReservation
     {
-        return new CancelReservation($this->concertRepository(), $this->eventDispatcher());
+        return new CancelReservation($this->reservationRepository(), $this->eventDispatcher());
     }
 
     private function eventDispatcher(): EventDispatcher
