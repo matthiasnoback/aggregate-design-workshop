@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace TicketMill\Domain\Model\Concert;
 
+use Assert\Assertion;
 use TicketMill\Domain\Model\Common\EmailAddress;
 use TicketMill\Domain\Model\Common\EventRecording;
 
@@ -21,6 +22,9 @@ final class Concert
         ScheduledDate $date,
         int $numberOfSeats
     ) {
+        Assertion::notEq($name, '', 'The name of a concert should not be empty');
+        Assertion::greaterThan($numberOfSeats, 0, 'Number of seats should be greater than 0');
+
         $this->concertId = $concertId;
     }
 
