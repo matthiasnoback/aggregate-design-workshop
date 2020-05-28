@@ -26,7 +26,7 @@ final class ServiceContainer
 
     public function makeReservationService(): MakeReservation
     {
-        return new MakeReservation($this->concertRepository(), $this->eventDispatcher());
+        return new MakeReservation($this->concertRepository(), $this->reservationRepository(), $this->eventDispatcher());
     }
 
     public function cancelReservation(): CancelReservation
