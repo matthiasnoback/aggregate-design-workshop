@@ -7,10 +7,9 @@ use TicketMill\Domain\Model\Common\EmailAddress;
 use TicketMill\Domain\Model\Common\EventRecording;
 use TicketMill\Domain\Model\Concert\ConcertId;
 use TicketMill\Domain\Model\Concert\ReservationId;
+use TicketMill\Domain\Model\Concert\ReservationWasCancelled;
+use TicketMill\Domain\Model\Concert\ReservationWasMade;
 
-/**
- * @deprecated Only use this when you arrived at Assignment 5
- */
 final class Reservation
 {
     use EventRecording;
@@ -35,6 +34,11 @@ final class Reservation
      */
     private $numberOfSeats;
 
+    /**
+     * @var bool
+     */
+    private $wasCancelled = false;
+
     private function __construct(
         ReservationId $reservationId,
         ConcertId $concertId,
@@ -53,12 +57,16 @@ final class Reservation
         EmailAddress $emailAddress,
         int $numberOfSeats
     ): Reservation {
-        return new self(
+        $reservation = new self(
             $reservationId,
             $concertId,
             $emailAddress,
             $numberOfSeats
         );
+
+        $reservation->recordThat(new ReservationWasMade($reservationId, $concertId, $emailAddress, $numberOfSeats));
+
+        return $reservation;
     }
 
     public function reservationId(): ReservationId
@@ -68,5 +76,11 @@ final class Reservation
 
     public function cancel(): void
     {
+        if ($this->wasCancelled) {
+            return;
+        }
+
+        $this->wasCancelled = true;
+        $this->recordThat(new ReservationWasCancelled($this->reservationId, $this->concertId, $this->numberOfSeats));
     }
 }
