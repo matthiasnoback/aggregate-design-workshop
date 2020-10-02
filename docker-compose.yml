@@ -6,8 +6,6 @@ services:
         image: matthiasnoback/aggregate-design-workshop-php
         volumes:
             - ./:/app:cached
-        environment:
-            COMPOSER_HOME: /home/.composer
         user: ${HOST_UID}:${HOST_GID}
 
     composer:

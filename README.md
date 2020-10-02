@@ -4,7 +4,7 @@
 
 ### Requirements
 
-- PHP (>= 7.1)
+- PHP (>= 7.4)
 - Composer
 
 ### Getting started
@@ -31,6 +31,7 @@
   export HOST_GID=$(id -g)
   export HOST_UID=$(id -u)
   ```
+
 - Clone this repository and `cd` into it.
 - Run `docker-compose pull`
 - Run `docker/composer.sh install --prefer-dist` to install the project's dependencies.
