@@ -8,10 +8,7 @@ use TicketMill\Domain\Model\Common\EmailAddress;
 
 final class MailerSpyTest extends TestCase
 {
-    /**
-     * @var MailerSpy
-     */
-    private $mailer;
+    private MailerSpy $mailer;
 
     protected function setUp(): void
     {

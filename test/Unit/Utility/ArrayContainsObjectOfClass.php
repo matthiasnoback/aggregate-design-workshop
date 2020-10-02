@@ -8,22 +8,13 @@ use PHPUnit\Framework\Constraint\Constraint;
 
 final class ArrayContainsObjectOfClass extends Constraint
 {
-    /**
-     * @var string
-     */
-    private $expectedClass;
-
-    /**
-     * @var int
-     */
-    private $expectedNumberOfObjects;
+    private string $expectedClass;
+    private int $expectedNumberOfObjects;
 
     public function __construct(string $expectedClass, int $expectedNumberOfObjects)
     {
         $this->expectedClass = $expectedClass;
         $this->expectedNumberOfObjects = $expectedNumberOfObjects;
-
-        parent::__construct();
     }
 
     protected function matches($other): bool

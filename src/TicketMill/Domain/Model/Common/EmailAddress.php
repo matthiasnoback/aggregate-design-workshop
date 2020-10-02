@@ -7,10 +7,7 @@ use Assert\Assertion;
 
 final class EmailAddress
 {
-    /**
-     * @var string
-     */
-    private $emailAddress;
+    private string $emailAddress;
 
     private function __construct(string $emailAddress)
     {

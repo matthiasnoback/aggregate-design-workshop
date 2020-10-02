@@ -5,20 +5,9 @@ namespace TicketMill\Domain\Model\Concert;
 
 final class ReservationWasCancelled
 {
-    /**
-     * @var ReservationId
-     */
-    private $reservationId;
-
-    /**
-     * @var ConcertId
-     */
-    private $concertId;
-
-    /**
-     * @var int
-     */
-    private $numberOfSeats;
+    private ReservationId $reservationId;
+    private ConcertId $concertId;
+    private int $numberOfSeats;
 
     public function __construct(
         ReservationId $reservationId,

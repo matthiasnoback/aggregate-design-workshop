@@ -10,10 +10,7 @@ final class Concert
 {
     use EventRecording;
 
-    /**
-     * @var ConcertId
-     */
-    private $concertId;
+    private ConcertId $concertId;
 
     private function __construct(
         ConcertId $concertId,

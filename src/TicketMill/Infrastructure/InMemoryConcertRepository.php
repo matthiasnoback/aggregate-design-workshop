@@ -13,9 +13,9 @@ use TicketMill\Domain\Model\Concert\ReservationId;
 final class InMemoryConcertRepository implements ConcertRepository
 {
     /**
-     * @var array&Concert[]
+     * @var array<Concert> & Concert[]
      */
-    private $concerts;
+    private array $concerts = [];
 
     /**
      * @throws CouldNotFindConcert

@@ -12,9 +12,9 @@ use TicketMill\Domain\Model\Reservation\ReservationRepository;
 final class InMemoryReservationRepository implements ReservationRepository
 {
     /**
-     * @var array&Reservation[]
+     * @var array<Reservation> & Reservation[]
      */
-    private $reservations;
+    private array $reservations = [];
 
     public function getById(ReservationId $reservationId): Reservation
     {

@@ -5,15 +5,9 @@ namespace TicketMill\Domain\Model\Concert;
 
 final class ConcertWasPlanned
 {
-    /**
-     * @var ConcertId
-     */
-    private $concertId;
+    private ConcertId $concertId;
 
-    /**
-     * @var int
-     */
-    private $numberOfSeats;
+    private int $numberOfSeats;
 
     public function __construct(
         ConcertId $concertId,

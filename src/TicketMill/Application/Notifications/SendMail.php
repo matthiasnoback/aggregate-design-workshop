@@ -7,10 +7,7 @@ use TicketMill\Domain\Model\Concert\ReservationWasMade;
 
 final class SendMail
 {
-    /**
-     * @var Mailer
-     */
-    private $mailer;
+    private Mailer $mailer;
 
     public function __construct(Mailer $mailer)
     {

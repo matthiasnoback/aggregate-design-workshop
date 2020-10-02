@@ -21,20 +21,11 @@ final class FeatureContext implements Context
      */
     private $container;
 
-    /**
-     * @var ConcertId|null
-     */
-    private $concertId;
+    private ?ConcertId $concertId = null;
 
-    /**
-     * @var string|null
-     */
-    private $emailAddress;
+    private ?string $emailAddress = null;
 
-    /**
-     * @var ReservationId|null
-     */
-    private $reservationId;
+    private ?ReservationId $reservationId = null;
 
     /**
      * @BeforeScenario

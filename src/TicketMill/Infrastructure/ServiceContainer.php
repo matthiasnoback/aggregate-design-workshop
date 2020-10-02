@@ -14,10 +14,7 @@ use TicketMill\Domain\Model\Reservation\ReservationRepository;
 
 final class ServiceContainer
 {
-    /**
-     * @var EventDispatcher | null
-     */
-    private $eventDispatcher;
+    private ?EventDispatcher $eventDispatcher = null;
 
     public function planConcertService(): PlanConcert
     {

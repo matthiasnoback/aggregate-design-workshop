@@ -8,10 +8,7 @@ use InvalidArgumentException;
 
 final class ScheduledDate
 {
-    /**
-     * @var string
-     */
-    private $date;
+    private string $date;
 
     private function __construct(string $date)
     {

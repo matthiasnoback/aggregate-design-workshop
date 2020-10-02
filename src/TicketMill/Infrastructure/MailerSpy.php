@@ -11,9 +11,9 @@ use TicketMill\Domain\Model\Common\EmailAddress;
 final class MailerSpy implements Mailer
 {
     /**
-     * @var array
+     * @var array<string,array<string>>
      */
-    private $emails = [];
+    private array $emails = [];
 
     public function sendReservationWasMadeEmail(EmailAddress $emailAddress, int $numberOfSeats): void
     {

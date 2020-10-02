@@ -15,25 +15,10 @@ final class Reservation
 {
     use EventRecording;
 
-    /**
-     * @var ReservationId
-     */
-    private $reservationId;
-
-    /**
-     * @var ConcertId
-     */
-    private $concertId;
-
-    /**
-     * @var EmailAddress
-     */
-    private $emailAddress;
-
-    /**
-     * @var int
-     */
-    private $numberOfSeats;
+    private ReservationId $reservationId;
+    private ConcertId $concertId;
+    private EmailAddress $emailAddress;
+    private int $numberOfSeats;
 
     private function __construct(
         ReservationId $reservationId,

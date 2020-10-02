@@ -7,10 +7,7 @@ use Assert\Assertion;
 
 final class ConcertId
 {
-    /**
-     * @var string
-     */
-    private $id;
+    private string $id;
 
     private function __construct(string $id)
     {
