@@ -15,6 +15,9 @@ use TicketMill\Domain\Model\Reservation\ReservationRepository;
 final class ServiceContainer
 {
     private ?EventDispatcher $eventDispatcher = null;
+    private ?ConcertRepository $concertRepository = null;
+    private ?ReservationRepository $reservationRepository = null;
+    private ?MailerSpy $mailer = null;
 
     public function planConcertService(): PlanConcert
     {
@@ -46,22 +49,28 @@ final class ServiceContainer
 
     private function concertRepository(): ConcertRepository
     {
-        static $service;
+        if ($this->concertRepository === null) {
+            $this->concertRepository = new InMemoryConcertRepository();
+        }
 
-        return $service ?? $service = new InMemoryConcertRepository();
+        return $this->concertRepository;
     }
 
     private function reservationRepository(): ReservationRepository
     {
-        static $service;
+        if ($this->reservationRepository === null) {
+            $this->reservationRepository = new InMemoryReservationRepository();
+        }
 
-        return $service ?? $service = new InMemoryReservationRepository();
+        return $this->reservationRepository;
     }
 
     public function mailer(): MailerSpy
     {
-        static $service;
+        if ($this->mailer === null) {
+            $this->mailer = new MailerSpy();
+        }
 
-        return $service ?? $service = new MailerSpy();
+        return $this->mailer;
     }
 }
