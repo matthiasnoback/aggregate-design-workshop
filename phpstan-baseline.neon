@@ -1,21 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Constructor of class TicketMill\\\\Domain\\\\Model\\\\Concert\\\\Concert has an unused parameter \\$date\\.$#"
-			count: 1
-			path: src/TicketMill/Domain/Model/Concert/Concert.php
-
-		-
-			message: "#^Constructor of class TicketMill\\\\Domain\\\\Model\\\\Concert\\\\Concert has an unused parameter \\$name\\.$#"
-			count: 1
-			path: src/TicketMill/Domain/Model/Concert/Concert.php
-
-		-
-			message: "#^Constructor of class TicketMill\\\\Domain\\\\Model\\\\Concert\\\\Concert has an unused parameter \\$numberOfSeats\\.$#"
-			count: 1
-			path: src/TicketMill/Domain/Model/Concert/Concert.php
-
-		-
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 12
 			path: test/Unit/TicketMill/Domain/Model/Concert/ConcertTest.php
