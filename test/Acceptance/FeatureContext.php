@@ -116,7 +116,6 @@ final class FeatureContext implements Context
         Assertion::isInstanceOf($this->reservationId, ReservationId::class);
 
         $this->container->cancelReservation()->cancelReservation(
-            $this->concertId->asString(),
             $this->reservationId->asString()
         );
     }
