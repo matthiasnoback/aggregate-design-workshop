@@ -12,6 +12,7 @@ final class Concert
     use EventRecording;
 
     private ConcertId $concertId;
+    private ScheduledDate $date;
 
     private function __construct(
         ConcertId $concertId,
@@ -20,6 +21,7 @@ final class Concert
         int $numberOfSeats
     ) {
         $this->concertId = $concertId;
+        $this->date = $date;
     }
 
     public static function plan(
@@ -53,6 +55,11 @@ final class Concert
 
     public function reschedule(ScheduledDate $newDate): void
     {
+        if ($this->date->equals($newDate)) {
+            return;
+        }
+
+        $this->recordThat(new ConcertWasRescheduled());
     }
 
     public function cancel(): void
