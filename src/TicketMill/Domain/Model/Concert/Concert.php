@@ -80,7 +80,13 @@ final class Concert
 
     public function processReservation(int $numberOfSeats): void
     {
+        if ($numberOfSeats > $this->numberOfSeatsAvailable()) {
+            $this->recordThat(new ReservationWasRejected());
+            return;
+        }
+
         $this->numberOfSeatsReserved += $numberOfSeats;
+        $this->recordThat(new ReservationWasAccepted());
     }
 
     public function processReservationCancellation(int $numberOfSeats): void
