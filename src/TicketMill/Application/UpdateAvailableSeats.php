@@ -23,7 +23,7 @@ final class UpdateAvailableSeats
     {
         $concert = $this->concertRepository->getById($event->concertId());
 
-        $concert->processReservation($event->numberOfSeats());
+        $concert->processReservation($event->numberOfSeats(), $event->reservationId());
 
         $this->concertRepository->save($concert);
 
