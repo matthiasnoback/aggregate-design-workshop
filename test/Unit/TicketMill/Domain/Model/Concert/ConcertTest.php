@@ -3,8 +3,6 @@
 namespace TicketMill\Domain\Model\Concert;
 
 use InvalidArgumentException;
-use RuntimeException;
-use TicketMill\Domain\Model\Common\EmailAddress;
 use Utility\AggregateTestCase;
 
 final class ConcertTest extends AggregateTestCase
@@ -145,84 +143,6 @@ final class ConcertTest extends AggregateTestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function you_can_reserve_seats_for_a_concert(): void
-    {
-        $concert = $this->concertWithNumberOfSeatsAvailable(10);
-
-        $concert->makeReservation($this->aReservationId(), $this->anEmailAddress(), 3);
-
-        self::assertArrayContainsObjectOfClass(
-            ReservationWasMade::class,
-            $concert->releaseEvents()
-        );
-        self::assertEquals(7, $concert->numberOfSeatsAvailable());
-    }
-
-    /**
-     * @test
-     */
-    public function you_can_not_reserve_more_seats_for_a_concert_than_there_are_seats(): void
-    {
-        $concert = $this->concertWithNumberOfSeatsAvailable(10);
-
-        $this->expectException(CouldNotReserveSeats::class);
-        $this->expectExceptionMessage('Not enough seats were available');
-
-        $concert->makeReservation($this->aReservationId(), $this->anEmailAddress(), $moreThanAvailable = 11);
-    }
-
-    /**
-     * @test
-     */
-    public function you_can_not_reserve_more_seats_for_a_concert_than_there_are_seats_available(): void
-    {
-        $concert = $this->concertWithNumberOfSeatsAvailable(10);
-        $concert->makeReservation($this->aReservationId(), $this->anEmailAddress(), 7);
-        self::assertEquals(3, $concert->numberOfSeatsAvailable());
-
-        $this->expectException(CouldNotReserveSeats::class);
-        $this->expectExceptionMessage('Not enough seats were available');
-
-        $concert->makeReservation($this->anotherReservationId(), $this->anEmailAddress(), $moreThanAvailable = 6);
-    }
-
-    /**
-     * @test
-     */
-    public function cancelling_a_reservation_makes_its_seats_available_again(): void
-    {
-        $concert = $this->concertWithNumberOfSeatsAvailable(10);
-        $concert->makeReservation($this->aReservationId(), $this->anEmailAddress(), 4);
-        $reservationId = $this->anotherReservationId();
-        $concert->makeReservation($reservationId, $this->anEmailAddress(), 3);
-
-        $concert->cancelReservation($reservationId);
-
-        self::assertArrayContainsObjectOfClass(
-            ReservationWasCancelled::class,
-            $concert->releaseEvents()
-        );
-
-        self::assertEquals(10 - 4, $concert->numberOfSeatsAvailable());
-    }
-
-    /**
-     * @test
-     */
-    public function it_will_fail_to_cancel_a_reservation_if_the_reservation_does_not_exist(): void
-    {
-        $concert = $this->aConcert();
-
-        $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('not found');
-
-        // No reservations have been made, so reservation 1 does not exist
-        $concert->cancelReservation($this->aReservationId());
-    }
-
     private function aConcertId(): ConcertId
     {
         return ConcertId::fromString('de939fac-7777-449a-9360-b66f3cc3daec');
@@ -231,21 +151,6 @@ final class ConcertTest extends AggregateTestCase
     private function aName(): string
     {
         return 'Name';
-    }
-
-    private function concertWithNumberOfSeatsAvailable(int $numberOfSeats): Concert
-    {
-        return Concert::plan(
-            $this->aConcertId(),
-            $this->aName(),
-            $this->aDate(),
-            $numberOfSeats
-        );
-    }
-
-    private function anEmailAddress(): EmailAddress
-    {
-        return EmailAddress::fromString('test@example.com');
     }
 
     private function aDate(): ScheduledDate
@@ -276,15 +181,5 @@ final class ConcertTest extends AggregateTestCase
     private function aNumberOfSeats(): int
     {
         return 10;
-    }
-
-    private function aReservationId(): ReservationId
-    {
-        return ReservationId::fromString('48ebab9c-1be8-42e5-b87a-6adda38d9116');
-    }
-
-    private function anotherReservationId(): ReservationId
-    {
-        return ReservationId::fromString('dc5998cb-34fa-4589-a4a1-33f3f76a812a');
     }
 }

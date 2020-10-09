@@ -4,9 +4,9 @@ namespace TicketMill\Domain\Model\Reservation;
 
 use TicketMill\Domain\Model\Common\EmailAddress;
 use TicketMill\Domain\Model\Concert\ConcertId;
-use TicketMill\Domain\Model\Concert\ReservationId;
-use TicketMill\Domain\Model\Concert\ReservationWasCancelled;
-use TicketMill\Domain\Model\Concert\ReservationWasMade;
+use TicketMill\Domain\Model\Reservation\ReservationId;
+use TicketMill\Domain\Model\Reservation\ReservationWasCancelled;
+use TicketMill\Domain\Model\Reservation\ReservationWasMade;
 use Utility\AggregateTestCase;
 
 final class ReservationTest extends AggregateTestCase

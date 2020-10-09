@@ -8,7 +8,7 @@ use TicketMill\Domain\Model\Concert\Concert;
 use TicketMill\Domain\Model\Concert\ConcertId;
 use TicketMill\Domain\Model\Concert\ConcertRepository;
 use TicketMill\Domain\Model\Concert\CouldNotFindConcert;
-use TicketMill\Domain\Model\Concert\ReservationId;
+use TicketMill\Domain\Model\Reservation\ReservationId;
 
 final class InMemoryConcertRepository implements ConcertRepository
 {
