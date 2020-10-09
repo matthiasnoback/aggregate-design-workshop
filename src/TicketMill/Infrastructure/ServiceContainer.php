@@ -50,11 +50,17 @@ final class ServiceContainer
             );
             $this->eventDispatcher->registerSubscriber(
                 ReservationWasMade::class,
-                [new UpdateAvailableSeats($this->concertRepository()), 'whenReservationWasMade']
+                [new UpdateAvailableSeats(
+                    $this->concertRepository(),
+                    $this->eventDispatcher()), 'whenReservationWasMade'
+                ]
             );
             $this->eventDispatcher->registerSubscriber(
                 ReservationWasCancelled::class,
-                [new UpdateAvailableSeats($this->concertRepository()), 'whenReservationWasCancelled']
+                [new UpdateAvailableSeats(
+                    $this->concertRepository(),
+                    $this->eventDispatcher()), 'whenReservationWasCancelled'
+                ]
             );
         }
 

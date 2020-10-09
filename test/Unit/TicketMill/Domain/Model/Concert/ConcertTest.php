@@ -151,7 +151,41 @@ final class ConcertTest extends AggregateTestCase
         $concert = $this->aConcertWithNumberOfSeats(10);
         $concert->processReservation(2);
 
-        self::assertEquals(8, $concert->numberOfSeatsAvailable());
+        self::assertArrayContainsObjectOfClass(
+            ReservationWasAccepted::class,
+            $concert->releaseEvents()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_rejects_a_reservation_if_the_number_of_seats_exceeds_the_number_of_available_seats(): void
+    {
+        $concert = $this->aConcertWithNumberOfSeats(10);
+        $concert->processReservation(12);
+
+        self::assertArrayContainsObjectOfClass(
+            ReservationWasRejected::class,
+            $concert->releaseEvents()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_rejects_the_first_reservation_that_exceeds_the_number_of_available_seats(): void
+    {
+        $concert = $this->aConcertWithNumberOfSeats(10);
+        $concert->processReservation(8);
+        $concert->releaseEvents();
+
+        $concert->processReservation(3);
+
+        self::assertArrayContainsObjectOfClass(
+            ReservationWasRejected::class,
+            $concert->releaseEvents()
+        );
     }
 
     /**
