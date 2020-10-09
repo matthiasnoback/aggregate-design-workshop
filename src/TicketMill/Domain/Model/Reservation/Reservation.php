@@ -21,15 +21,7 @@ final class Reservation
     private int $numberOfSeats;
 
     private function __construct(
-        ReservationId $reservationId,
-        ConcertId $concertId,
-        EmailAddress $emailAddress,
-        int $numberOfSeats
     ) {
-        $this->reservationId = $reservationId;
-        $this->concertId = $concertId;
-        $this->emailAddress = $emailAddress;
-        $this->numberOfSeats = $numberOfSeats;
     }
 
     public static function make(
@@ -38,12 +30,14 @@ final class Reservation
         EmailAddress $emailAddress,
         int $numberOfSeats
     ): Reservation {
-        return new self(
-            $reservationId,
-            $concertId,
-            $emailAddress,
-            $numberOfSeats
-        );
+        $instance = new self();
+
+        $instance->reservationId = $reservationId;
+        $instance->concertId = $concertId;
+        $instance->emailAddress = $emailAddress;
+        $instance->numberOfSeats = $numberOfSeats;
+
+        return $instance;
     }
 
     public function reservationId(): ReservationId
