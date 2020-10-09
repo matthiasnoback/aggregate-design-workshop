@@ -5,12 +5,15 @@ namespace TicketMill\Infrastructure;
 
 use Common\EventDispatcher\EventDispatcher;
 use TicketMill\Application\CancelReservation;
+use TicketMill\Application\ConfirmReservation;
 use TicketMill\Application\MakeReservation;
 use TicketMill\Application\Notifications\SendMail;
 use TicketMill\Application\PlanConcert;
 use TicketMill\Application\UpdateAvailableSeats;
 use TicketMill\Domain\Model\Concert\ConcertRepository;
+use TicketMill\Domain\Model\Concert\ReservationWasAccepted;
 use TicketMill\Domain\Model\Reservation\ReservationWasCancelled;
+use TicketMill\Domain\Model\Reservation\ReservationWasConfirmed;
 use TicketMill\Domain\Model\Reservation\ReservationWasMade;
 use TicketMill\Domain\Model\Reservation\ReservationRepository;
 
@@ -44,15 +47,30 @@ final class ServiceContainer
     {
         if ($this->eventDispatcher === null) {
             $this->eventDispatcher = new EventDispatcher();
+            $this->eventDispatcher->subscribeToAllEvents(
+                function (object $event): void {
+                    echo get_class($event) . "\n";
+                }
+            );
             $this->eventDispatcher->registerSubscriber(
-                ReservationWasMade::class,
-                [new SendMail($this->mailer()), 'whenReservationWasMade']
+                ReservationWasConfirmed::class,
+                [new SendMail($this->mailer()), 'whenReservationWasConfirmed']
             );
             $this->eventDispatcher->registerSubscriber(
                 ReservationWasMade::class,
                 [new UpdateAvailableSeats(
                     $this->concertRepository(),
                     $this->eventDispatcher()), 'whenReservationWasMade'
+                ]
+            );
+            $this->eventDispatcher->registerSubscriber(
+                ReservationWasAccepted::class,
+                [
+                    new ConfirmReservation(
+                        $this->reservationRepository(),
+                        $this->eventDispatcher()
+                    ),
+                    'whenReservationWasAccepted'
                 ]
             );
             $this->eventDispatcher->registerSubscriber(

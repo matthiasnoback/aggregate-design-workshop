@@ -3,6 +3,7 @@
 namespace TicketMill\Domain\Model\Concert;
 
 use InvalidArgumentException;
+use TicketMill\Domain\Model\Reservation\ReservationId;
 use Utility\AggregateTestCase;
 
 final class ConcertTest extends AggregateTestCase
@@ -127,7 +128,7 @@ final class ConcertTest extends AggregateTestCase
     public function it_can_process_a_reservation(): void
     {
         $concert = $this->aConcertWithNumberOfSeats(10);
-        $concert->processReservation(2);
+        $concert->processReservation(2, $this->aReservationId());
 
         self::assertArrayContainsObjectOfClass(
             ReservationWasAccepted::class,
@@ -141,7 +142,7 @@ final class ConcertTest extends AggregateTestCase
     public function it_rejects_a_reservation_if_the_number_of_seats_exceeds_the_number_of_available_seats(): void
     {
         $concert = $this->aConcertWithNumberOfSeats(10);
-        $concert->processReservation(12);
+        $concert->processReservation(12, $this->aReservationId());
 
         self::assertArrayContainsObjectOfClass(
             ReservationWasRejected::class,
@@ -155,10 +156,10 @@ final class ConcertTest extends AggregateTestCase
     public function it_rejects_the_first_reservation_that_exceeds_the_number_of_available_seats(): void
     {
         $concert = $this->aConcertWithNumberOfSeats(10);
-        $concert->processReservation(8);
+        $concert->processReservation(8, $this->aReservationId());
         $concert->releaseEvents();
 
-        $concert->processReservation(3);
+        $concert->processReservation(3, $this->aReservationId());
 
         self::assertArrayContainsObjectOfClass(
             ReservationWasRejected::class,
@@ -172,8 +173,8 @@ final class ConcertTest extends AggregateTestCase
     public function it_can_process_a_reservation_cancellation(): void
     {
         $concert = $this->aConcertWithNumberOfSeats(10);
-        $concert->processReservation(3);
-        $concert->processReservation(2);
+        $concert->processReservation(3, $this->aReservationId());
+        $concert->processReservation(2, $this->aReservationId());
         $concert->processReservationCancellation(2);
 
         self::assertEquals(7, $concert->numberOfSeatsAvailable());
@@ -222,5 +223,10 @@ final class ConcertTest extends AggregateTestCase
     private function aNumberOfSeats(): int
     {
         return 10;
+    }
+
+    private function aReservationId(): ReservationId
+    {
+        return ReservationId::fromString('10b6edf2-1c74-4faf-925d-51991d73cc41');
     }
 }
