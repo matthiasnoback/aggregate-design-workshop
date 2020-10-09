@@ -39,4 +39,9 @@ final class ReservationWasMade
     {
         return $this->numberOfSeats;
     }
+
+    public function reservationId(): ReservationId
+    {
+        return $this->reservationId;
+    }
 }
