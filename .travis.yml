@@ -1,0 +1,11 @@
+sudo: required
+
+services:
+  - docker
+
+install:
+  - docker-compose pull
+  - docker/composer.sh install --prefer-dist
+
+script:
+  - docker/run_tests.sh
