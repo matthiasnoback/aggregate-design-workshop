@@ -4,33 +4,32 @@ declare(strict_types=1);
 namespace TicketMill\Application;
 
 use Common\EventDispatcher\EventDispatcher;
-use TicketMill\Domain\Model\Concert\ConcertId;
-use TicketMill\Domain\Model\Concert\ConcertRepository;
 use TicketMill\Domain\Model\Concert\ReservationId;
+use TicketMill\Domain\Model\Reservation\ReservationRepository;
 
 final class CancelReservation
 {
-    private ConcertRepository $concertRepository;
+    private ReservationRepository $reservationRepository;
     private EventDispatcher $eventDispatcher;
 
     public function __construct(
-        ConcertRepository $concertRepository,
+        ReservationRepository $reservationRepository,
         EventDispatcher $eventDispatcher
     ) {
-        $this->concertRepository = $concertRepository;
+        $this->reservationRepository = $reservationRepository;
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function cancelReservation(string $concertId, string $reservationId): void
+    public function cancelReservation(string $reservationId): void
     {
-        $concert = $this->concertRepository->getById(
-            ConcertId::fromString($concertId)
+        $reservation = $this->reservationRepository->getById(
+            ReservationId::fromString($reservationId)
         );
 
-        $concert->cancelReservation(ReservationId::fromString($reservationId));
+        $reservation->cancel();
 
-        $this->concertRepository->save($concert);
+        $this->reservationRepository->save($reservation);
 
-        $this->eventDispatcher->dispatchAll($concert->releaseEvents());
+        $this->eventDispatcher->dispatchAll($reservation->releaseEvents());
     }
 }
