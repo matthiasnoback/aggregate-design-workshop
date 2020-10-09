@@ -22,15 +22,8 @@ final class Concert
     private array $reservations = [];
     private int $numberOfSeats;
 
-    private function __construct(
-        ConcertId $concertId,
-        string $name,
-        ScheduledDate $date,
-        int $numberOfSeats
-    ) {
-        $this->concertId = $concertId;
-        $this->date = $date;
-        $this->numberOfSeats = $numberOfSeats;
+    private function __construct()
+    {
     }
 
     public static function plan(
@@ -48,12 +41,13 @@ final class Concert
             'The number of seats for a concert should be greater than 0'
         );
 
-        return new self(
-            $concertId,
-            $name,
-            $date,
-            $numberOfSeats
-        );
+        $instance = new self();
+
+        $instance->concertId = $concertId;
+        $instance->date = $date;
+        $instance->numberOfSeats = $numberOfSeats;
+
+        return $instance;
     }
 
     public function concertId(): ConcertId
