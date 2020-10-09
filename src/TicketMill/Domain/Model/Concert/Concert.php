@@ -14,6 +14,7 @@ final class Concert
     private ScheduledDate $date;
     private bool $isCancelled = false;
     private int $numberOfSeats;
+    private int $numberOfSeatsReserved = 0;
 
     private function __construct()
     {
@@ -74,6 +75,16 @@ final class Concert
 
     public function numberOfSeatsAvailable(): int
     {
-        return $this->numberOfSeats;
+        return $this->numberOfSeats - $this->numberOfSeatsReserved;
+    }
+
+    public function processReservation(int $numberOfSeats): void
+    {
+        $this->numberOfSeatsReserved += $numberOfSeats;
+    }
+
+    public function processReservationCancellation(int $numberOfSeats): void
+    {
+        $this->numberOfSeatsReserved -= $numberOfSeats;
     }
 }

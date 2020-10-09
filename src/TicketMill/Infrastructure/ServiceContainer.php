@@ -8,7 +8,9 @@ use TicketMill\Application\CancelReservation;
 use TicketMill\Application\MakeReservation;
 use TicketMill\Application\Notifications\SendMail;
 use TicketMill\Application\PlanConcert;
+use TicketMill\Application\UpdateAvailableSeats;
 use TicketMill\Domain\Model\Concert\ConcertRepository;
+use TicketMill\Domain\Model\Reservation\ReservationWasCancelled;
 use TicketMill\Domain\Model\Reservation\ReservationWasMade;
 use TicketMill\Domain\Model\Reservation\ReservationRepository;
 
@@ -45,6 +47,14 @@ final class ServiceContainer
             $this->eventDispatcher->registerSubscriber(
                 ReservationWasMade::class,
                 [new SendMail($this->mailer()), 'whenReservationWasMade']
+            );
+            $this->eventDispatcher->registerSubscriber(
+                ReservationWasMade::class,
+                [new UpdateAvailableSeats($this->concertRepository()), 'whenReservationWasMade']
+            );
+            $this->eventDispatcher->registerSubscriber(
+                ReservationWasCancelled::class,
+                [new UpdateAvailableSeats($this->concertRepository()), 'whenReservationWasCancelled']
             );
         }
 
