@@ -24,4 +24,9 @@ final class ReservationId
     {
         return $this->id;
     }
+
+    public function equals(self $other): bool
+    {
+        return $this->id === $other->id;
+    }
 }

@@ -24,4 +24,9 @@ final class ConcertId
     {
         return $this->id;
     }
+
+    public function equals(self $other): bool
+    {
+        return $this->id === $other->id;
+    }
 }
