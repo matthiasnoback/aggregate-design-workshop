@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace TicketMill\Domain\Model\Concert;
 
 use Assert\Assertion;
+use RuntimeException;
 use TicketMill\Domain\Model\Common\EmailAddress;
 use TicketMill\Domain\Model\Common\EventRecording;
 
@@ -15,6 +16,12 @@ final class Concert
     private ScheduledDate $date;
     private bool $isCancelled = false;
 
+    /**
+     * @var Reservation[] $reservations
+     */
+    private array $reservations = [];
+    private int $numberOfSeats;
+
     private function __construct(
         ConcertId $concertId,
         string $name,
@@ -23,6 +30,7 @@ final class Concert
     ) {
         $this->concertId = $concertId;
         $this->date = $date;
+        $this->numberOfSeats = $numberOfSeats;
     }
 
     public static function plan(
@@ -30,8 +38,7 @@ final class Concert
         string $name,
         ScheduledDate $date,
         int $numberOfSeats
-    ): Concert
-    {
+    ): Concert {
         Assertion::notEmpty(
             $name,
             'The name of a concert should not be empty');
@@ -78,17 +85,59 @@ final class Concert
         $this->recordThat(new ConcertWasCancelled());
     }
 
-    public function makeReservation(ReservationId $reservationId, EmailAddress $emailAddress,
+    public function makeReservation(
+        ReservationId $reservationId,
+        EmailAddress $emailAddress,
         int $numberOfSeats
     ): void {
+        if ($numberOfSeats > $this->numberOfSeatsAvailable()) {
+            throw CouldNotReserveSeats::becauseNotEnoughSeatsWereAvailable($numberOfSeats);
+        }
+
+        $this->reservations[] = new Reservation(
+            $reservationId,
+            $emailAddress,
+            $numberOfSeats
+        );
+        $this->recordThat(
+            new ReservationWasMade(
+                $reservationId,
+                $this->concertId,
+                $emailAddress,
+                $numberOfSeats
+            )
+        );
     }
 
     public function cancelReservation(ReservationId $reservationId): void
     {
+        foreach ($this->reservations as $key => $reservation) {
+            if ($reservation->reservationId()->equals($reservationId)) {
+                unset($this->reservations[$key]);
+                $this->recordThat(
+                    new ReservationWasCancelled(
+                        $reservationId,
+                        $this->concertId,
+                        $reservation->numberOfSeats()
+                    )
+                );
+                return;
+            }
+        }
+
+        throw new RuntimeException(sprintf('Reservation "%s" not found', $reservationId->asString()));
     }
 
     public function numberOfSeatsAvailable(): int
     {
-        return 0;
+        $numberOfSeatsReserved = array_reduce(
+            $this->reservations,
+            function (int $total, Reservation $reservation): int {
+                return $total + $reservation->numberOfSeats();
+            },
+            0
+        );
+
+        return $this->numberOfSeats - $numberOfSeatsReserved;
     }
 }
