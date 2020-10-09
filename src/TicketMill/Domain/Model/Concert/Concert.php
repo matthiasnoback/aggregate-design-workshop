@@ -4,8 +4,6 @@ declare(strict_types=1);
 namespace TicketMill\Domain\Model\Concert;
 
 use Assert\Assertion;
-use RuntimeException;
-use TicketMill\Domain\Model\Common\EmailAddress;
 use TicketMill\Domain\Model\Common\EventRecording;
 
 final class Concert
@@ -15,11 +13,6 @@ final class Concert
     private ConcertId $concertId;
     private ScheduledDate $date;
     private bool $isCancelled = false;
-
-    /**
-     * @var Reservation[] $reservations
-     */
-    private array $reservations = [];
     private int $numberOfSeats;
 
     private function __construct()
@@ -79,59 +72,8 @@ final class Concert
         $this->recordThat(new ConcertWasCancelled());
     }
 
-    public function makeReservation(
-        ReservationId $reservationId,
-        EmailAddress $emailAddress,
-        int $numberOfSeats
-    ): void {
-        if ($numberOfSeats > $this->numberOfSeatsAvailable()) {
-            throw CouldNotReserveSeats::becauseNotEnoughSeatsWereAvailable($numberOfSeats);
-        }
-
-        $this->reservations[] = new Reservation(
-            $reservationId,
-            $emailAddress,
-            $numberOfSeats
-        );
-        $this->recordThat(
-            new ReservationWasMade(
-                $reservationId,
-                $this->concertId,
-                $emailAddress,
-                $numberOfSeats
-            )
-        );
-    }
-
-    public function cancelReservation(ReservationId $reservationId): void
-    {
-        foreach ($this->reservations as $key => $reservation) {
-            if ($reservation->reservationId()->equals($reservationId)) {
-                unset($this->reservations[$key]);
-                $this->recordThat(
-                    new ReservationWasCancelled(
-                        $reservationId,
-                        $this->concertId,
-                        $reservation->numberOfSeats()
-                    )
-                );
-                return;
-            }
-        }
-
-        throw new RuntimeException(sprintf('Could not find reservation "%s"', $reservationId->asString()));
-    }
-
     public function numberOfSeatsAvailable(): int
     {
-        $numberOfSeatsReserved = array_reduce(
-            $this->reservations,
-            function (int $total, Reservation $reservation): int {
-                return $total + $reservation->numberOfSeats();
-            },
-            0
-        );
-
-        return $this->numberOfSeats - $numberOfSeatsReserved;
+        return $this->numberOfSeats;
     }
 }
