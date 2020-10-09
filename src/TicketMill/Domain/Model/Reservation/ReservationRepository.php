@@ -2,9 +2,6 @@
 
 namespace TicketMill\Domain\Model\Reservation;
 
-use TicketMill\Domain\Model\Concert\CouldNotFindReservation;
-use TicketMill\Domain\Model\Concert\ReservationId;
-
 interface ReservationRepository
 {
     /**

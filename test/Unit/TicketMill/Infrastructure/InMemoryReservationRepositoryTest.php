@@ -5,7 +5,7 @@ namespace TicketMill\Infrastructure;
 use PHPUnit\Framework\TestCase;
 use TicketMill\Domain\Model\Common\EmailAddress;
 use TicketMill\Domain\Model\Concert\ConcertId;
-use TicketMill\Domain\Model\Concert\ReservationId;
+use TicketMill\Domain\Model\Reservation\ReservationId;
 use TicketMill\Domain\Model\Reservation\Reservation;
 
 final class InMemoryReservationRepositoryTest extends TestCase
