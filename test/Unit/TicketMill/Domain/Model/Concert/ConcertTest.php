@@ -78,6 +78,28 @@ final class ConcertTest extends AggregateTestCase
     /**
      * @test
      */
+    public function we_can_reschedule_twice(): void
+    {
+        $date = '2021-09-01 20:00';
+        $concert = $this->aConcertScheduledFor(
+            $date
+        );
+        $anotherDate = ScheduledDate::fromString('2021-10-01 20:00');
+        $concert->reschedule($anotherDate);
+        $concert->releaseEvents();
+
+        $concert->reschedule($originalDate = ScheduledDate::fromString($date));
+
+        self::assertArrayContainsObjectOfClass(
+            ConcertWasRescheduled::class,
+            $concert->releaseEvents(),
+            1
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_can_not_be_rescheduled_when_it_has_been_cancelled(): void
     {
         $this->markTestIncomplete('Assignment 3');

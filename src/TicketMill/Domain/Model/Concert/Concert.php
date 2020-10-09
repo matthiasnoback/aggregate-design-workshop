@@ -59,6 +59,7 @@ final class Concert
             return;
         }
 
+        $this->date = $newDate;
         $this->recordThat(new ConcertWasRescheduled());
     }
 
