@@ -98,7 +98,7 @@ final class ServiceContainer
         return $this->concertRepository;
     }
 
-    private function reservationRepository(): ReservationRepository
+    public function reservationRepository(): ReservationRepository
     {
         if ($this->reservationRepository === null) {
             $this->reservationRepository = new InMemoryReservationRepository();

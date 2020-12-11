@@ -85,7 +85,7 @@ final class Concert
     ): void
     {
         if ($numberOfSeats > $this->numberOfSeatsAvailable()) {
-            $this->recordThat(new ReservationWasRejected());
+            $this->recordThat(new ReservationWasRejected($reservationId));
             return;
         }
 

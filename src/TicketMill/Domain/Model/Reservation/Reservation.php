@@ -16,6 +16,7 @@ final class Reservation
     private EmailAddress $emailAddress;
     private int $numberOfSeats;
     private bool $isCancelled = false;
+    private bool $isConfirmed = false;
 
     private function __construct(
     ) {
@@ -69,11 +70,18 @@ final class Reservation
 
     public function confirm(): void
     {
+        $this->isConfirmed = true;
+
         $this->recordThat(
             new ReservationWasConfirmed(
                 $this->emailAddress,
                 $this->numberOfSeats
             )
         );
+    }
+
+    public function isConfirmed(): bool
+    {
+        return $this->isConfirmed;
     }
 }

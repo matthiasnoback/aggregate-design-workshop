@@ -7,7 +7,6 @@ use Common\EventDispatcher\EventDispatcher;
 use TicketMill\Domain\Model\Common\EmailAddress;
 use TicketMill\Domain\Model\Concert\ConcertId;
 use TicketMill\Domain\Model\Concert\ConcertRepository;
-use TicketMill\Domain\Model\Reservation\CouldNotReserveSeats;
 use TicketMill\Domain\Model\Reservation\ReservationId;
 use TicketMill\Domain\Model\Reservation\Reservation;
 use TicketMill\Domain\Model\Reservation\ReservationRepository;
@@ -31,10 +30,6 @@ final class MakeReservation
     public function makeReservation(string $concertId, string $emailAddress, int $numberOfSeats): ReservationId
     {
         $concert = $this->concertRepository->getById(ConcertId::fromString($concertId));
-
-        if ($numberOfSeats > $concert->numberOfSeatsAvailable()) {
-            throw CouldNotReserveSeats::becauseNotEnoughSeatsWereAvailable($numberOfSeats);
-        }
 
         $reservationId = $this->reservationRepository->nextIdentity();
 
