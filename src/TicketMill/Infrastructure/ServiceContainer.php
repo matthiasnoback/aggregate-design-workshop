@@ -18,6 +18,7 @@ final class ServiceContainer
     private ?ConcertRepository $concertRepository = null;
     private ?ReservationRepository $reservationRepository = null;
     private ?MailerSpy $mailer = null;
+    private ?EventSubscriberSpy $eventSubscriberSpy = null;
 
     public function planConcertService(): PlanConcert
     {
@@ -38,6 +39,14 @@ final class ServiceContainer
     {
         if ($this->eventDispatcher === null) {
             $this->eventDispatcher = new EventDispatcher();
+            $this->eventDispatcher->subscribeToAllEvents(
+                function (object $event): void {
+                    echo get_class($event) . "\n";
+                }
+            );
+            $this->eventDispatcher->subscribeToAllEvents(
+                $this->eventSubscriberSpy()
+            );
             $this->eventDispatcher->registerSubscriber(
                 ReservationWasMade::class,
                 [new SendMail($this->mailer()), 'whenReservationWasMade']
@@ -72,5 +81,22 @@ final class ServiceContainer
         }
 
         return $this->mailer;
+    }
+
+    private function eventSubscriberSpy(): EventSubscriberSpy
+    {
+        if ($this->eventSubscriberSpy === null) {
+            $this->eventSubscriberSpy = new EventSubscriberSpy();
+        }
+
+        return $this->eventSubscriberSpy;
+    }
+
+    /**
+     * @return array<object>
+     */
+    public function dispatchedEvents(): array
+    {
+        return $this->eventSubscriberSpy()->dispatchedEvents();
     }
 }
