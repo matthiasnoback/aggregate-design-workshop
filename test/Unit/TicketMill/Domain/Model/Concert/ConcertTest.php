@@ -203,7 +203,7 @@ final class ConcertTest extends AggregateTestCase
         $concert = $this->aConcert();
 
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('not found');
+        $this->expectExceptionMessage('Could not find');
 
         // No reservations have been made, so reservation 1 does not exist
         $concert->cancelReservation($this->aReservationId());
