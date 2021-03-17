@@ -1,4 +1,5 @@
 parameters:
+  tmpDir: %currentWorkingDirectory%/cache/phpstan
   level: max
   paths:
     - src/
