@@ -20,4 +20,14 @@ final class Reservation
         $this->emailAddress = $emailAddress;
         $this->numberOfSeats = $numberOfSeats;
     }
+
+    public function numberOfSeats(): int
+    {
+        return $this->numberOfSeats;
+    }
+
+    public function reservationId(): ReservationId
+    {
+        return $this->reservationId;
+    }
 }
