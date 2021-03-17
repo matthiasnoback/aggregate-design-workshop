@@ -128,8 +128,6 @@ final class ConcertTest extends AggregateTestCase
      */
     public function you_can_reserve_seats_for_a_concert(): void
     {
-        $this->markTestIncomplete('Assignment 4');
-
         $concert = $this->concertWithNumberOfSeatsAvailable(10);
 
         $concert->makeReservation($this->aReservationId(), $this->anEmailAddress(), 3);
@@ -146,8 +144,6 @@ final class ConcertTest extends AggregateTestCase
      */
     public function you_can_not_reserve_more_seats_for_a_concert_than_there_are_seats(): void
     {
-        $this->markTestIncomplete('Assignment 4');
-
         $concert = $this->concertWithNumberOfSeatsAvailable(10);
 
         $this->expectException(CouldNotReserveSeats::class);
@@ -161,8 +157,6 @@ final class ConcertTest extends AggregateTestCase
      */
     public function you_can_not_reserve_more_seats_for_a_concert_than_there_are_seats_available(): void
     {
-        $this->markTestIncomplete('Assignment 4');
-
         $concert = $this->concertWithNumberOfSeatsAvailable(10);
         $concert->makeReservation($this->aReservationId(), $this->anEmailAddress(), 7);
         self::assertEquals(3, $concert->numberOfSeatsAvailable());
@@ -178,8 +172,6 @@ final class ConcertTest extends AggregateTestCase
      */
     public function cancelling_a_reservation_makes_its_seats_available_again(): void
     {
-        $this->markTestIncomplete('Assignment 4');
-
         $concert = $this->concertWithNumberOfSeatsAvailable(10);
         $concert->makeReservation($this->aReservationId(), $this->anEmailAddress(), 4);
         $reservationId = $this->anotherReservationId();
@@ -200,8 +192,6 @@ final class ConcertTest extends AggregateTestCase
      */
     public function it_will_fail_to_cancel_a_reservation_if_the_reservation_does_not_exist(): void
     {
-        $this->markTestIncomplete('Assignment 4');
-
         $concert = $this->aConcert();
 
         $this->expectException(RuntimeException::class);
