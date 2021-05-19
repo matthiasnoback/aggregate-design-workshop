@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# Copy user and group ID into .env file
+printf "HOST_UID=%s\nHOST_GID=%s\n" "$(id -u)" "$(id -g)" > .env
+
+# Pull Docker images
+docker-compose pull
+
+# Run composer install
+docker-compose run --rm composer install --ignore-platform-reqs --prefer-dist
