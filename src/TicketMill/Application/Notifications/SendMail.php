@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace TicketMill\Application\Notifications;
 
+use TicketMill\Domain\Model\Reservation\ReservationWasConfirmed;
 use TicketMill\Domain\Model\Reservation\ReservationWasMade;
 
 final class SendMail
@@ -14,11 +15,11 @@ final class SendMail
         $this->mailer = $mailer;
     }
 
-    public function whenReservationWasMade(ReservationWasMade $reservationWasMade): void
+    public function whenReservationWasConfirmed(ReservationWasConfirmed $event): void
     {
         $this->mailer->sendReservationWasMadeEmail(
-            $reservationWasMade->emailAddress(),
-            $reservationWasMade->numberOfSeats()
+            $event->emailAddress(),
+            $event->numberOfSeats()
         );
     }
 }

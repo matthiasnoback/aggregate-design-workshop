@@ -8,9 +8,11 @@ use TicketMill\Application\CancelReservation;
 use TicketMill\Application\MakeReservation;
 use TicketMill\Application\Notifications\SendMail;
 use TicketMill\Application\PlanConcert;
-use TicketMill\Application\UpdateAvailableSeats;
+use TicketMill\Application\ProcessReservation;
 use TicketMill\Domain\Model\Concert\ConcertRepository;
+use TicketMill\Domain\Model\Concert\ReservationWasAccepted;
 use TicketMill\Domain\Model\Reservation\ReservationWasCancelled;
+use TicketMill\Domain\Model\Reservation\ReservationWasConfirmed;
 use TicketMill\Domain\Model\Reservation\ReservationWasMade;
 use TicketMill\Domain\Model\Reservation\ReservationRepository;
 
@@ -54,16 +56,20 @@ final class ServiceContainer
                 $this->eventSubscriberSpy()
             );
             $this->eventDispatcher->registerSubscriber(
-                ReservationWasMade::class,
-                [new SendMail($this->mailer()), 'whenReservationWasMade']
+                ReservationWasConfirmed::class,
+                [new SendMail($this->mailer()), 'whenReservationWasConfirmed']
             );
             $this->eventDispatcher->registerSubscriber(
                 ReservationWasMade::class,
-                [new UpdateAvailableSeats($this->concertRepository()), 'whenReservationWasMade']
+                [new ProcessReservation($this->concertRepository(), $this->reservationRepository(), $this->eventDispatcher()), 'whenReservationWasMade']
             );
             $this->eventDispatcher->registerSubscriber(
                 ReservationWasCancelled::class,
-                [new UpdateAvailableSeats($this->concertRepository()), 'whenReservationWasCancelled']
+                [new ProcessReservation($this->concertRepository(), $this->reservationRepository(), $this->eventDispatcher()), 'whenReservationWasCancelled']
+            );
+            $this->eventDispatcher->registerSubscriber(
+                ReservationWasAccepted::class,
+                [new ProcessReservation($this->concertRepository(), $this->reservationRepository(), $this->eventDispatcher()), 'whenReservationWasAccepted']
             );
         }
 

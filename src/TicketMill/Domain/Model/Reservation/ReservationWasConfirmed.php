@@ -4,35 +4,18 @@ declare(strict_types=1);
 namespace TicketMill\Domain\Model\Reservation;
 
 use TicketMill\Domain\Model\Common\EmailAddress;
-use TicketMill\Domain\Model\Concert\ConcertId;
 
-final class ReservationWasMade
+final class ReservationWasConfirmed
 {
-    private ReservationId $reservationId;
-    private ConcertId $concertId;
     private EmailAddress $emailAddress;
     private int $numberOfSeats;
 
     public function __construct(
-        ReservationId $reservationId,
-        ConcertId $concertId,
         EmailAddress $emailAddress,
         int $numberOfSeats
     ) {
-        $this->reservationId = $reservationId;
-        $this->concertId = $concertId;
         $this->emailAddress = $emailAddress;
         $this->numberOfSeats = $numberOfSeats;
-    }
-
-    public function concertId(): ConcertId
-    {
-        return $this->concertId;
-    }
-
-    public function reservationId(): ReservationId
-    {
-        return $this->reservationId;
     }
 
     public function emailAddress(): EmailAddress
