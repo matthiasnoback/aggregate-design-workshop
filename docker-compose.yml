@@ -6,10 +6,12 @@ services:
         image: matthiasnoback/aggregate-design-workshop-php
         volumes:
             - ./:/app:cached
-        user: ${HOST_UID}:${HOST_GID}
+        env_file:
+            - .env
 
     composer:
         image: composer:latest
-        user: ${HOST_UID}:${HOST_GID}
         volumes:
             - ./:/app:cached
+        env_file:
+            - .env

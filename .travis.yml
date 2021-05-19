@@ -4,8 +4,7 @@ services:
   - docker
 
 install:
-  - docker-compose pull
-  - docker/composer.sh install --prefer-dist
+  - bin/install
 
 script:
-  - docker/run_tests.sh
+  - bin/run_tests

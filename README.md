@@ -25,18 +25,10 @@
 
 ### Getting started
 
-- Set up environment variables `HOST_UID` and `HOST_GID` with their correct values:
-
-  ```
-  export HOST_GID=$(id -g)
-  export HOST_UID=$(id -u)
-  ```
-
 - Clone this repository and `cd` into it.
-- Run `docker-compose pull`
-- Run `docker/composer.sh install --prefer-dist` to install the project's dependencies.
+- Run `bin/install`, which will pull the relevant Docker images and run `composer install`
 
 ### Usage
 
-- Run `docker/composer.sh` to use Composer (e.g. `docker/composer.sh require --dev [...]`).
-- Run `docker/run_tests.sh` to run the tests.
+- Run `bin/composer` to use Composer (e.g. `bin/composer require --dev [...]`).
+- Run `bin/run_tests` to run the tests.
