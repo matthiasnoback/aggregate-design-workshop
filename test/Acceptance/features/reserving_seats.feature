@@ -9,7 +9,7 @@ Feature:
     Given a concert was planned with 10 seats
     And 7 seats have already been reserved
     When I try to make a reservation for 6 seats
-    Then the system will show me an error message saying that "Not enough seats were available"
+    Then this reservation should be rejected
 
   Scenario: Canceling a reservation makes the reserved seats available again
     Given a concert was planned with 5 seats

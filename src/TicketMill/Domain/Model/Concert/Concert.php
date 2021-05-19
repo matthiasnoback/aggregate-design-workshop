@@ -83,7 +83,7 @@ final class Concert
     public function processReservation(ReservationWasMade $event): void
     {
         if ($event->numberOfSeats() > $this->numberOfSeatsAvailable()) {
-            $this->recordThat(new ReservationWasRejected());
+            $this->recordThat(new ReservationWasRejected($event->reservationId()));
         } else {
             $this->recordThat(new ReservationWasAccepted($event->reservationId()));
             $this->numberOfSeatsReserved += $event->numberOfSeats();

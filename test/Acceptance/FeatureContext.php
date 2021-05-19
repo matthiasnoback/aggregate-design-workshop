@@ -8,7 +8,9 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Tester\Exception\PendingException;
 use BehatExpectException\ExpectException;
 use Exception;
+use RuntimeException;
 use TicketMill\Domain\Model\Concert\ConcertId;
+use TicketMill\Domain\Model\Concert\ReservationWasRejected;
 use TicketMill\Domain\Model\Reservation\ReservationId;
 use TicketMill\Infrastructure\ServiceContainer;
 
@@ -51,6 +53,7 @@ final class FeatureContext implements Context
      * @When I make a reservation for :numberOfSeats seats and provide :emailAddress as my email address
      * @Then I should be able to make a reservation for :numberOfSeats seats
      * @Given :numberOfSeats seats have already been reserved
+     * @When I try to make a reservation for :numberOfSeats seats
      */
     public function iMakeAReservationForSeats(int $numberOfSeats, string $emailAddress = 'test@example.com'): void
     {
@@ -62,24 +65,6 @@ final class FeatureContext implements Context
             $this->concertId->asString(),
             $emailAddress,
             $numberOfSeats
-        );
-    }
-
-    /**
-     * @When I try to make a reservation for :numberOfSeats seats
-     */
-    public function iTryToMakeAReservationForSeats(int $numberOfSeats): void
-    {
-        $this->shouldFail(
-            function () use ($numberOfSeats) {
-                Assertion::isInstanceOf($this->concertId, ConcertId::class);
-
-                $this->container->makeReservationService()->makeReservation(
-                    $this->concertId->asString(),
-                    'test@example.com',
-                    $numberOfSeats
-                );
-            }
         );
     }
 
@@ -118,5 +103,23 @@ final class FeatureContext implements Context
         $this->container->cancelReservation()->cancelReservation(
             $this->reservationId->asString()
         );
+    }
+
+    /**
+     * @Then this reservation should be rejected
+     */
+    public function thenThisReservationShouldBeRejected(): void
+    {
+        Assertion::isInstanceOf($this->reservationId, ReservationId::class);
+        // @TODO what's the visible behavior that we expect? Let's test for it here
+
+        foreach ($this->container->dispatchedEvents() as $event) {
+            if ($event instanceof ReservationWasRejected) {
+                Assertion::eq($this->reservationId->asString(), $event->reservationId()->asString());
+                return;
+            }
+        }
+
+        throw new RuntimeException('Expected the reservation to be rejected');
     }
 }
