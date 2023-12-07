@@ -46,12 +46,38 @@ final class ConcertTest extends AggregateTestCase
      */
     public function it_can_be_rescheduled(): void
     {
-        $this->markTestIncomplete('Assignment 2');
-
         $concert = $this->aConcertScheduledFor('2020-09-01 20:00');
 
-        // TODO: Verify that the concert has indeed been rescheduled
         $concert->reschedule($anotherDate = ScheduledDate::fromString('2021-10-01 20:00'));
+
+        self::assertArrayContainsObjectOfClass(
+            ConcertWasRescheduled::class,
+            $concert->releaseEvents()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_be_rescheduled_again(): void
+    {
+        $concert = $this->aConcertScheduledFor('2020-09-01 20:00');
+
+        $sameDate = ScheduledDate::fromString('2021-10-01 20:00');
+        $concert->reschedule($sameDate);
+        self::assertArrayContainsObjectOfClass(
+            ConcertWasRescheduled::class,
+            $concert->releaseEvents(),
+            1
+        );
+
+        $concert->reschedule($sameDate);
+
+        self::assertArrayContainsObjectOfClass(
+            ConcertWasRescheduled::class,
+            $concert->releaseEvents(),
+            0
+        );
     }
 
     /**
@@ -59,15 +85,18 @@ final class ConcertTest extends AggregateTestCase
      */
     public function rescheduling_to_the_same_date_has_no_effect(): void
     {
-        $this->markTestIncomplete('Assignment 2');
-
         $date = '2021-10-01 20:00';
         $concert = $this->aConcertScheduledFor(
             $date
         );
 
-        // TODO: Verify that nothing has changed
         $concert->reschedule($sameDate = ScheduledDate::fromString($date));
+
+        self::assertArrayContainsObjectOfClass(
+            ConcertWasRescheduled::class,
+            $concert->releaseEvents(),
+            0
+        );
     }
 
     /**

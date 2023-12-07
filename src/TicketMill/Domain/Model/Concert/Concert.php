@@ -13,6 +13,8 @@ final class Concert
 
     private ConcertId $concertId;
 
+    private ScheduledDate $date;
+
     private function __construct()
     {
     }
@@ -29,6 +31,7 @@ final class Concert
         $instance = new self();
 
         $instance->concertId = $concertId;
+        $instance->date = $date;
 
         return $instance;
     }
@@ -40,6 +43,14 @@ final class Concert
 
     public function reschedule(ScheduledDate $newDate): void
     {
+        if ($newDate->equals($this->date)) {
+            return;
+        }
+
+        $this->date = $newDate;
+        $this->recordThat(
+            new ConcertWasRescheduled($this->concertId)
+        );
     }
 
     public function cancel(): void
