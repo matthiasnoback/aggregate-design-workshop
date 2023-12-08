@@ -114,7 +114,7 @@ final class Concert
         return $this->numberOfSeatsInTheBuilding - $this->numberOfSeatsReserved();
     }
 
-    private function areSeatsAvailable(int $numberOfSeats): bool
+    public function areSeatsAvailable(int $numberOfSeats): bool
     {
         return $this->numberOfSeatsAvailable() >= $numberOfSeats;
     }
