@@ -19,11 +19,6 @@ final class Concert
 
     private int $numberOfSeatsInTheBuilding;
 
-    /**
-     * @var array<string,Reservation>
-     */
-    private array $reservations = [];
-
     private function __construct()
     {
     }
@@ -77,38 +72,6 @@ final class Concert
         $this->recordThat(new ConcertWasCancelled($this->concertId));
     }
 
-    public function makeReservation(ReservationId $reservationId, EmailAddress $emailAddress,
-        int $numberOfSeats
-    ): void {
-        if (! $this->areSeatsAvailable($numberOfSeats)) {
-            throw CouldNotReserveSeats::becauseNotEnoughSeatsWereAvailable($numberOfSeats);
-        }
-        $this->reservations[$reservationId->asString()] = new Reservation(
-            $reservationId,
-            $emailAddress,
-            $numberOfSeats
-        );
-
-        $this->recordThat(
-            new ReservationWasMade(
-                $reservationId,
-                $this->concertId,
-                $emailAddress,
-                $numberOfSeats
-            )
-        );
-    }
-
-    public function cancelReservation(ReservationId $reservationId): void
-    {
-        if (! array_key_exists($reservationId->asString(), $this->reservations)) {
-            throw CouldNotCancelReservation::becauseItWasNotFound($reservationId);
-        }
-        $reservation = $this->reservations[$reservationId->asString()];
-        unset($this->reservations[$reservationId->asString()]);
-        $this->recordThat(new ReservationWasCancelled($reservationId, $this->concertId, $reservation->numberOfSeats()));
-    }
-
     private function numberOfSeatsAvailable(): int
     {
         return $this->numberOfSeatsInTheBuilding - $this->numberOfSeatsReserved();
@@ -121,12 +84,6 @@ final class Concert
 
     private function numberOfSeatsReserved(): int
     {
-        return array_reduce(
-            $this->reservations,
-            function (int $carry, Reservation $reservation) {
-                return $carry + $reservation->numberOfSeats();
-            },
-            0
-        );
+        return 0;
     }
 }

@@ -9,7 +9,7 @@ use TicketMill\Application\MakeReservation;
 use TicketMill\Application\Notifications\SendMail;
 use TicketMill\Application\PlanConcert;
 use TicketMill\Domain\Model\Concert\ConcertRepository;
-use TicketMill\Domain\Model\Concert\ReservationWasMade;
+use TicketMill\Domain\Model\Reservation\ReservationWasMade;
 use TicketMill\Domain\Model\Reservation\ReservationRepository;
 
 final class ServiceContainer

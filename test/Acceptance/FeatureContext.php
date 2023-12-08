@@ -5,11 +5,10 @@ namespace Test\Acceptance;
 
 use Assert\Assertion;
 use Behat\Behat\Context\Context;
-use Behat\Behat\Tester\Exception\PendingException;
 use BehatExpectException\ExpectException;
 use Exception;
 use TicketMill\Domain\Model\Concert\ConcertId;
-use TicketMill\Domain\Model\Concert\ReservationId;
+use TicketMill\Domain\Model\Reservation\ReservationId;
 use TicketMill\Infrastructure\ServiceContainer;
 
 final class FeatureContext implements Context

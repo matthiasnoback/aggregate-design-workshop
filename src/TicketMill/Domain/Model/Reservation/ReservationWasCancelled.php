@@ -1,7 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace TicketMill\Domain\Model\Concert;
+namespace TicketMill\Domain\Model\Reservation;
+
+use TicketMill\Domain\Model\Concert\ConcertId;
+use TicketMill\Domain\Model\Reservation\ReservationId;
 
 final class ReservationWasCancelled
 {

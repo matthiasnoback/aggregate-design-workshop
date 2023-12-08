@@ -6,7 +6,7 @@ namespace TicketMill\Application;
 use Common\EventDispatcher\EventDispatcher;
 use TicketMill\Domain\Model\Concert\ConcertId;
 use TicketMill\Domain\Model\Concert\ConcertRepository;
-use TicketMill\Domain\Model\Concert\ReservationId;
+use TicketMill\Domain\Model\Reservation\ReservationId;
 use TicketMill\Domain\Model\Reservation\ReservationRepository;
 
 final class CancelReservation
