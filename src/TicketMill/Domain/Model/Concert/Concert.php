@@ -17,7 +17,7 @@ final class Concert
 
     private bool $wasCancelled = false;
 
-    private int $numberOfSeats;
+    private int $numberOfSeatsInTheBuilding;
 
     /**
      * @var array<string,Reservation>
@@ -41,7 +41,7 @@ final class Concert
 
         $instance->concertId = $concertId;
         $instance->date = $date;
-        $instance->numberOfSeats = $numberOfSeats;
+        $instance->numberOfSeatsInTheBuilding = $numberOfSeats;
 
         return $instance;
     }
@@ -109,19 +109,24 @@ final class Concert
         $this->recordThat(new ReservationWasCancelled($reservationId, $this->concertId, $reservation->numberOfSeats()));
     }
 
-    public function numberOfSeatsAvailable(): int
+    private function numberOfSeatsAvailable(): int
     {
-        return $this->numberOfSeats - array_reduce(
+        return $this->numberOfSeatsInTheBuilding - $this->numberOfSeatsReserved();
+    }
+
+    private function areSeatsAvailable(int $numberOfSeats): bool
+    {
+        return $this->numberOfSeatsAvailable() >= $numberOfSeats;
+    }
+
+    private function numberOfSeatsReserved(): int
+    {
+        return array_reduce(
             $this->reservations,
             function (int $carry, Reservation $reservation) {
                 return $carry + $reservation->numberOfSeats();
             },
             0
         );
-    }
-
-    private function areSeatsAvailable(int $numberOfSeats): bool
-    {
-        return $this->numberOfSeatsAvailable() >= $numberOfSeats;
     }
 }

@@ -162,7 +162,6 @@ final class ConcertTest extends AggregateTestCase
             ReservationWasMade::class,
             $concert->releaseEvents()
         );
-        self::assertEquals(7, $concert->numberOfSeatsAvailable());
     }
 
     /**
@@ -185,7 +184,6 @@ final class ConcertTest extends AggregateTestCase
     {
         $concert = $this->concertWithNumberOfSeatsAvailable(10);
         $concert->makeReservation($this->aReservationId(), $this->anEmailAddress(), 7);
-        self::assertEquals(3, $concert->numberOfSeatsAvailable());
 
         $this->expectException(CouldNotReserveSeats::class);
         $this->expectExceptionMessage('Not enough seats were available');
@@ -209,8 +207,6 @@ final class ConcertTest extends AggregateTestCase
             ReservationWasCancelled::class,
             $concert->releaseEvents()
         );
-
-        self::assertEquals(10 - 4, $concert->numberOfSeatsAvailable());
     }
 
     /**
