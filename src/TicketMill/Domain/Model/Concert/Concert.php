@@ -102,7 +102,7 @@ final class Concert
     public function cancelReservation(ReservationId $reservationId): void
     {
         if (! array_key_exists($reservationId->asString(), $this->reservations)) {
-            throw new \RuntimeException('Could not find reservation');
+            throw CouldNotCancelReservation::becauseItWasNotFound($reservationId);
         }
         $reservation = $this->reservations[$reservationId->asString()];
         unset($this->reservations[$reservationId->asString()]);
