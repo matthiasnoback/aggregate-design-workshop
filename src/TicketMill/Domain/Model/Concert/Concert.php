@@ -17,6 +17,13 @@ final class Concert
 
     private bool $wasCancelled = false;
 
+    private int $numberOfSeats;
+
+    /**
+     * @var array<string,Reservation>
+     */
+    private array $reservations = [];
+
     private function __construct()
     {
     }
@@ -34,6 +41,7 @@ final class Concert
 
         $instance->concertId = $concertId;
         $instance->date = $date;
+        $instance->numberOfSeats = $numberOfSeats;
 
         return $instance;
     }
@@ -72,14 +80,48 @@ final class Concert
     public function makeReservation(ReservationId $reservationId, EmailAddress $emailAddress,
         int $numberOfSeats
     ): void {
+        if (! $this->areSeatsAvailable($numberOfSeats)) {
+            throw CouldNotReserveSeats::becauseNotEnoughSeatsWereAvailable($numberOfSeats);
+        }
+        $this->reservations[$reservationId->asString()] = new Reservation(
+            $reservationId,
+            $emailAddress,
+            $numberOfSeats
+        );
+
+        $this->recordThat(
+            new ReservationWasMade(
+                $reservationId,
+                $this->concertId,
+                $emailAddress,
+                $numberOfSeats
+            )
+        );
     }
 
     public function cancelReservation(ReservationId $reservationId): void
     {
+        if (! array_key_exists($reservationId->asString(), $this->reservations)) {
+            throw new \RuntimeException('Could not find reservation');
+        }
+        $reservation = $this->reservations[$reservationId->asString()];
+        unset($this->reservations[$reservationId->asString()]);
+        $this->recordThat(new ReservationWasCancelled($reservationId, $this->concertId, $reservation->numberOfSeats()));
     }
 
     public function numberOfSeatsAvailable(): int
     {
-        return 0;
+        return $this->numberOfSeats - array_reduce(
+            $this->reservations,
+            function (int $carry, Reservation $reservation) {
+                return $carry + $reservation->numberOfSeats();
+            },
+            0
+        );
+    }
+
+    private function areSeatsAvailable(int $numberOfSeats): bool
+    {
+        return $this->numberOfSeatsAvailable() >= $numberOfSeats;
     }
 }

@@ -5,6 +5,9 @@ namespace TicketMill\Domain\Model\Concert;
 
 use TicketMill\Domain\Model\Common\EmailAddress;
 
+/**
+ * Note: private to Concert
+ */
 final class Reservation
 {
     private ReservationId $reservationId;
@@ -19,5 +22,10 @@ final class Reservation
         $this->reservationId = $reservationId;
         $this->emailAddress = $emailAddress;
         $this->numberOfSeats = $numberOfSeats;
+    }
+
+    public function numberOfSeats(): int
+    {
+        return $this->numberOfSeats;
     }
 }
