@@ -8,8 +8,9 @@ Feature:
   Scenario: Reserving seats when not enough seats are available
     Given a concert was planned with 10 seats
     And 7 seats have already been reserved
-    When I try to make a reservation for 6 seats
-    Then the system will show me an error message saying that "Not enough seats were available"
+    When I make a reservation for 6 seats
+    # TODO think of the effect we want to verify here
+    Then I should receive an email on the provided address saying: "your reservation was not accepted"
 
   Scenario: Canceling a reservation makes the reserved seats available again
     Given a concert was planned with 5 seats

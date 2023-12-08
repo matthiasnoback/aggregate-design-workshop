@@ -50,6 +50,7 @@ final class FeatureContext implements Context
      * @When I make a reservation for :numberOfSeats seats and provide :emailAddress as my email address
      * @Then I should be able to make a reservation for :numberOfSeats seats
      * @Given :numberOfSeats seats have already been reserved
+     * @When I make a reservation for :numberOfSeats seats
      */
     public function iMakeAReservationForSeats(int $numberOfSeats, string $emailAddress = 'test@example.com'): void
     {

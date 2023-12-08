@@ -67,4 +67,14 @@ final class Reservation
             )
         );
     }
+
+    public function confirm(): void
+    {
+        $this->recordThat(new ReservationWasConfirmed(
+            $this->reservationId,
+            $this->concertId,
+            $this->emailAddress,
+            $this->numberOfSeats
+        ));
+    }
 }

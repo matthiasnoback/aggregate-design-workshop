@@ -32,10 +32,6 @@ final class MakeReservation
     {
         $concert = $this->concertRepository->getById(ConcertId::fromString($concertId));
 
-        if (! $concert->areSeatsAvailable($numberOfSeats)) {
-            throw CouldNotReserveSeats::becauseNotEnoughSeatsWereAvailable($numberOfSeats);
-        }
-
         $reservationId = $this->reservationRepository->nextIdentity();
 
         $reservation = Reservation::make(

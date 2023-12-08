@@ -23,6 +23,11 @@ final class MailerSpy implements Mailer
         );
     }
 
+    public function sendReservationWasRejectedEmail(EmailAddress $emailAddress): void
+    {
+        $this->emails[$emailAddress->asString()][] = 'your reservation was not accepted';
+    }
+
     public function assertEmailSent(string $emailAddress, string $messageContains): void
     {
         Assert::assertArrayHasKey($emailAddress, $this->emails, 'No mails were sent to ' . $emailAddress);

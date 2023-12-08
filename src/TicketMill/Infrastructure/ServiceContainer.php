@@ -10,7 +10,10 @@ use TicketMill\Application\Notifications\SendMail;
 use TicketMill\Application\PlanConcert;
 use TicketMill\Application\UpdateSeatsAvailable;
 use TicketMill\Domain\Model\Concert\ConcertRepository;
+use TicketMill\Domain\Model\Concert\ReservationWasAccepted;
+use TicketMill\Domain\Model\Concert\ReservationWasRejected;
 use TicketMill\Domain\Model\Reservation\ReservationWasCancelled;
+use TicketMill\Domain\Model\Reservation\ReservationWasConfirmed;
 use TicketMill\Domain\Model\Reservation\ReservationWasMade;
 use TicketMill\Domain\Model\Reservation\ReservationRepository;
 
@@ -54,16 +57,24 @@ final class ServiceContainer
                 $this->eventSubscriberSpy()
             );
             $this->eventDispatcher->registerSubscriber(
-                ReservationWasMade::class,
-                [new SendMail($this->mailer()), 'whenReservationWasMade']
+                ReservationWasConfirmed::class,
+                [new SendMail($this->mailer()), 'whenReservationWasConfirmed']
+            );
+            $this->eventDispatcher->registerSubscriber(
+                ReservationWasRejected::class,
+                [new SendMail($this->mailer()), 'whenReservationWasRejected']
             );
             $this->eventDispatcher->registerSubscriber(
                 ReservationWasMade::class,
-                [new UpdateSeatsAvailable($this->concertRepository()), 'whenReservationWasMade']
+                [$this->updateSeatsListener(), 'whenReservationWasMade']
             );
             $this->eventDispatcher->registerSubscriber(
                 ReservationWasCancelled::class,
-                [new UpdateSeatsAvailable($this->concertRepository()), 'whenReservationWasCancelled']
+                [$this->updateSeatsListener(), 'whenReservationWasCancelled']
+            );
+            $this->eventDispatcher->registerSubscriber(
+                ReservationWasAccepted::class,
+                [$this->updateSeatsListener(), 'whenReservationWasAccepted']
             );
         }
 
@@ -112,5 +123,13 @@ final class ServiceContainer
     public function dispatchedEvents(): array
     {
         return $this->eventSubscriberSpy()->dispatchedEvents();
+    }
+
+    /**
+     * @return UpdateSeatsAvailable
+     */
+    public function updateSeatsListener(): UpdateSeatsAvailable
+    {
+        return new UpdateSeatsAvailable($this->concertRepository(), $this->reservationRepository(), $this->eventDispatcher());
     }
 }
