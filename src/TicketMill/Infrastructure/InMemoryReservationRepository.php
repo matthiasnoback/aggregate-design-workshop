@@ -1,11 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace TicketMill\Infrastructure;
 
 use Ramsey\Uuid\Uuid;
-use TicketMill\Domain\Model\Concert\ReservationId;
 use TicketMill\Domain\Model\Concert\CouldNotFindReservation;
+use TicketMill\Domain\Model\Concert\ReservationId;
 use TicketMill\Domain\Model\Reservation\Reservation;
 use TicketMill\Domain\Model\Reservation\ReservationRepository;
 
@@ -18,7 +19,7 @@ final class InMemoryReservationRepository implements ReservationRepository
 
     public function getById(ReservationId $reservationId): Reservation
     {
-        if (!isset($this->reservations[$reservationId->asString()])) {
+        if (! isset($this->reservations[$reservationId->asString()])) {
             throw CouldNotFindReservation::withId($reservationId);
         }
 

@@ -1,11 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace TicketMill\Domain\Model\Concert;
 
 use Assert\Assertion;
 
-final class ConcertId
+final readonly class ConcertId
 {
     private string $id;
 
@@ -15,7 +16,7 @@ final class ConcertId
         $this->id = $id;
     }
 
-    public static function fromString(string $id): ConcertId
+    public static function fromString(string $id): self
     {
         return new self($id);
     }

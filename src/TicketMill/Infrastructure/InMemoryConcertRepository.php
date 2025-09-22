@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace TicketMill\Infrastructure;
@@ -22,7 +23,7 @@ final class InMemoryConcertRepository implements ConcertRepository
      */
     public function getById(ConcertId $concertId): Concert
     {
-        if (!isset($this->concerts[$concertId->asString()])) {
+        if (! isset($this->concerts[$concertId->asString()])) {
             throw CouldNotFindConcert::withId($concertId);
         }
 

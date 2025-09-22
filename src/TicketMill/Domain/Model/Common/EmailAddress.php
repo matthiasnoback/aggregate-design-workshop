@@ -1,11 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace TicketMill\Domain\Model\Common;
 
 use Assert\Assertion;
 
-final class EmailAddress
+final readonly class EmailAddress
 {
     private string $emailAddress;
 
@@ -15,7 +16,7 @@ final class EmailAddress
         $this->emailAddress = $emailAddress;
     }
 
-    public static function fromString(string $emailAddress): EmailAddress
+    public static function fromString(string $emailAddress): self
     {
         return new self($emailAddress);
     }

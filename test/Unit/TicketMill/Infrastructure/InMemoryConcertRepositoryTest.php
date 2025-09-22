@@ -9,10 +9,7 @@ use TicketMill\Domain\Model\Concert\ScheduledDate;
 
 final class InMemoryConcertRepositoryTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function it_can_save_and_load_a_concert(): void
+    public function testItCanSaveAndLoadAConcert(): void
     {
         $repository = new InMemoryConcertRepository();
 

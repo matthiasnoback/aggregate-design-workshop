@@ -11,10 +11,7 @@ use Utility\AggregateTestCase;
 
 final class ReservationTest extends AggregateTestCase
 {
-    /**
-     * @test
-     */
-    public function it_can_be_made_given_a_concert_id_an_email_address_and_a_number_of_seats(): void
+    public function testItCanBeMadeGivenAConcertIdAnEmailAddressAndANumberOfSeats(): void
     {
         $this->markTestIncomplete('Assignment 5');
 
@@ -31,10 +28,7 @@ final class ReservationTest extends AggregateTestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function it_can_be_cancelled(): void
+    public function testItCanBeCancelled(): void
     {
         $this->markTestIncomplete('Assignment 5');
 
@@ -53,10 +47,7 @@ final class ReservationTest extends AggregateTestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function cancelling_it_twice_has_no_effect(): void
+    public function testCancellingItTwiceHasNoEffect(): void
     {
         $this->markTestIncomplete('Assignment 5');
 

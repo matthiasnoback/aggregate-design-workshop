@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace TicketMill\Infrastructure;
@@ -6,7 +7,7 @@ namespace TicketMill\Infrastructure;
 final class EventSubscriberSpy
 {
     /**
-     * @var array<object> $dispatchedEvents
+     * @var array<object>
      */
     private array $dispatchedEvents = [];
 

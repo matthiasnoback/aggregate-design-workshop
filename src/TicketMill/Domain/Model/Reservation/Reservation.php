@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace TicketMill\Domain\Model\Reservation;
@@ -16,8 +17,11 @@ final class Reservation
     use EventRecording;
 
     private ReservationId $reservationId;
+
     private ConcertId $concertId;
+
     private EmailAddress $emailAddress;
+
     private int $numberOfSeats;
 
     private function __construct(
@@ -29,7 +33,7 @@ final class Reservation
         ConcertId $concertId,
         EmailAddress $emailAddress,
         int $numberOfSeats
-    ): Reservation {
+    ): self {
         $instance = new self();
 
         $instance->reservationId = $reservationId;

@@ -7,20 +7,14 @@ use PHPUnit\Framework\TestCase;
 
 final class ScheduledDateTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function it_requires_a_string_with_the_correct_format_to_be_used(): void
+    public function testItRequiresAStringWithTheCorrectFormatToBeUsed(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
         ScheduledDate::fromString('incorrect-format');
     }
 
-    /**
-     * @test
-     */
-    public function it_can_be_created_from_a_string_and_converted_back_to_it(): void
+    public function testItCanBeCreatedFromAStringAndConvertedBackToIt(): void
     {
         $date = '2020-09-01 20:00';
 
@@ -30,10 +24,7 @@ final class ScheduledDateTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function it_can_be_compared_with_other_instances(): void
+    public function testItCanBeComparedWithOtherInstances(): void
     {
         self::assertTrue(
             ScheduledDate::fromString('2020-09-01 20:00')->equals(

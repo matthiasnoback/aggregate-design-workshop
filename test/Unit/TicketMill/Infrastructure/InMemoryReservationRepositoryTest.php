@@ -10,10 +10,7 @@ use TicketMill\Domain\Model\Reservation\Reservation;
 
 final class InMemoryReservationRepositoryTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function it_can_save_and_load_a_reservation(): void
+    public function testItCanSaveAndLoadAReservation(): void
     {
         $repository = new InMemoryReservationRepository();
 

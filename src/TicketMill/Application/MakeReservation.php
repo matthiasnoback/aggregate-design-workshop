@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace TicketMill\Application;
@@ -9,17 +10,10 @@ use TicketMill\Domain\Model\Concert\ConcertId;
 use TicketMill\Domain\Model\Concert\ConcertRepository;
 use TicketMill\Domain\Model\Concert\ReservationId;
 
-final class MakeReservation
+final readonly class MakeReservation
 {
-    private ConcertRepository $concertRepository;
-    private EventDispatcher $eventDispatcher;
-
-    public function __construct(
-        ConcertRepository $concertRepository,
-        EventDispatcher $eventDispatcher
-    ) {
-        $this->concertRepository = $concertRepository;
-        $this->eventDispatcher = $eventDispatcher;
+    public function __construct(private ConcertRepository $concertRepository, private EventDispatcher $eventDispatcher)
+    {
     }
 
     public function makeReservation(string $concertId, string $emailAddress, int $numberOfSeats): ReservationId

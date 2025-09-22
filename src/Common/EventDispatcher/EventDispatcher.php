@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Common\EventDispatcher;
@@ -47,7 +48,7 @@ final class EventDispatcher
     {
         Assertion::isObject($event, 'An event should be an object');
 
-        $eventName = get_class($event);
+        $eventName = $event::class;
         $eventSubscribers = array_merge(
             $this->subscribedToAllEvents,
             $this->subscribers[$eventName] ?? []
