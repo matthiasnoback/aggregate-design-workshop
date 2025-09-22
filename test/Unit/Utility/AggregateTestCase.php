@@ -7,6 +7,9 @@ use PHPUnit\Framework\TestCase;
 
 abstract class AggregateTestCase extends TestCase
 {
+    /**
+     * @param array<object> $array
+     */
     protected static function assertArrayContainsObjectOfClass(
         string $expectedClass,
         array $array,

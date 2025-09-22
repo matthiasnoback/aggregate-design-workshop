@@ -6,17 +6,17 @@
         }
     ],
     "require-dev": {
-        "behat/behat": "^3.7",
-        "phpunit/phpunit": "^9.4",
-        "matthiasnoback/behat-expect-exception": "^0.3.0",
-        "phpstan/phpstan": "^0.12.48",
-        "phpstan/phpstan-beberlei-assert": "^0.12.3",
-        "phpstan/phpstan-phpunit": "^0.12.16"
+        "behat/behat": "^3.24",
+        "matthiasnoback/behat-expect-exception": "^1.0",
+        "phpunit/phpunit": "^12.3",
+        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-beberlei-assert": "^2.0",
+        "phpstan/phpstan-phpunit": "^2.0"
     },
     "require": {
-        "php": "^7.4",
-        "roave/security-advisories": "dev-master",
-        "matthiasnoback/php-workshop-tools": "^0.34.0"
+        "php": "^8.4",
+        "beberlei/assert": "^3.3",
+        "ramsey/uuid": "^4.9"
     },
     "autoload": {
         "psr-4": {
@@ -27,9 +27,6 @@
         "psr-4": {
             "Test\\Acceptance\\": "test/Acceptance/",
             "": ["test/Unit"]
-        },
-        "files": [
-            "vendor/phpunit/phpunit/src/Framework/Assert/Functions.php"
-        ]
+        }
     }
 }

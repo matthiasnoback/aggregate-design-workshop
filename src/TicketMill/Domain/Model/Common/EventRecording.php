@@ -12,7 +12,7 @@ trait EventRecording
      */
     private array $events = [];
 
-    final private function recordThat(object $event): void
+    private function recordThat(object $event): void
     {
         Assertion::isObject($event, 'An event should be an object');
 

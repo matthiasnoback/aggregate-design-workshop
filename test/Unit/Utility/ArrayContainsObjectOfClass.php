@@ -17,13 +17,14 @@ final class ArrayContainsObjectOfClass extends Constraint
         $this->expectedNumberOfObjects = $expectedNumberOfObjects;
     }
 
-    protected function matches($other): bool
+    protected function matches(mixed $other): bool
     {
         Assertion::isArray($other);
 
         $countedNumberOfObjects = 0;
 
         foreach ($other as $element) {
+            Assertion::isObject($element);
             if (get_class($element) === $this->expectedClass) {
                 $countedNumberOfObjects++;
             }

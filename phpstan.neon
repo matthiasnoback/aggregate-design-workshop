@@ -4,9 +4,13 @@ parameters:
   paths:
     - src/
     - test/
-  checkMissingIterableValueType: false
   # Don't force participants to update the baseline if they have fixed a known issue
   reportUnmatchedIgnoredErrors: false
+  ignoreErrors:
+    -
+      identifiers:
+        - method.unused
+        - property.onlyWritten
 includes:
   - vendor/phpstan/phpstan-beberlei-assert/extension.neon
   - vendor/phpstan/phpstan-phpunit/extension.neon
