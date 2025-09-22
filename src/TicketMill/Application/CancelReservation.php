@@ -11,8 +11,10 @@ use TicketMill\Domain\Model\Concert\ReservationId;
 
 final readonly class CancelReservation
 {
-    public function __construct(private ConcertRepository $concertRepository, private EventDispatcher $eventDispatcher)
-    {
+    public function __construct(
+        private ConcertRepository $concertRepository,
+        private EventDispatcher $eventDispatcher
+    ) {
     }
 
     public function cancelReservation(string $concertId, string $reservationId): void

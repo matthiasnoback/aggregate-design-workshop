@@ -12,8 +12,10 @@ use TicketMill\Domain\Model\Concert\ReservationId;
 
 final readonly class MakeReservation
 {
-    public function __construct(private ConcertRepository $concertRepository, private EventDispatcher $eventDispatcher)
-    {
+    public function __construct(
+        private ConcertRepository $concertRepository,
+        private EventDispatcher $eventDispatcher
+    ) {
     }
 
     public function makeReservation(string $concertId, string $emailAddress, int $numberOfSeats): ReservationId

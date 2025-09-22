@@ -9,8 +9,10 @@ use PHPUnit\Framework\Constraint\Constraint;
 
 final class ArrayContainsObjectOfClass extends Constraint
 {
-    public function __construct(private readonly string $expectedClass, private readonly int $expectedNumberOfObjects)
-    {
+    public function __construct(
+        private readonly string $expectedClass,
+        private readonly int $expectedNumberOfObjects
+    ) {
     }
 
     public function toString(): string

@@ -8,8 +8,9 @@ use TicketMill\Domain\Model\Concert\ReservationWasMade;
 
 final readonly class SendMail
 {
-    public function __construct(private Mailer $mailer)
-    {
+    public function __construct(
+        private Mailer $mailer
+    ) {
     }
 
     public function whenReservationWasMade(ReservationWasMade $reservationWasMade): void

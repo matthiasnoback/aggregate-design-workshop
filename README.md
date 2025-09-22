@@ -12,4 +12,5 @@
 ## Usage
 
 - Run `bin/composer` to use Composer (e.g. `bin/composer require --dev [...]`).
-- Run `bin/run_tests` to run the tests.
+- Run `bin/test` to run the tests.
+- Run `bin/fix` to fix code style.

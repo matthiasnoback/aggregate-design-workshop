@@ -8,7 +8,10 @@ use TicketMill\Domain\Model\Common\EmailAddress;
 
 final readonly class Reservation
 {
-    public function __construct(private ReservationId $reservationId, private EmailAddress $emailAddress, private int $numberOfSeats)
-    {
+    public function __construct(
+        private ReservationId $reservationId,
+        private EmailAddress $emailAddress,
+        private int $numberOfSeats
+    ) {
     }
 }

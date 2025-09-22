@@ -12,8 +12,10 @@ use TicketMill\Domain\Model\Concert\ScheduledDate;
 
 final readonly class PlanConcert
 {
-    public function __construct(private ConcertRepository $concertRepository, private EventDispatcher $eventDispatcher)
-    {
+    public function __construct(
+        private ConcertRepository $concertRepository,
+        private EventDispatcher $eventDispatcher
+    ) {
     }
 
     public function plan(
