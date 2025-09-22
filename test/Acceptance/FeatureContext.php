@@ -19,37 +19,13 @@ final class FeatureContext implements Context
 {
     use ExpectException;
 
-    /**
-     * @var ServiceContainer
-     */
-    private $container;
+    private ServiceContainer $container;
 
     private ?ConcertId $concertId = null;
 
     private ?string $emailAddress = null;
 
     private ?ReservationId $reservationId = null;
-
-    #[BeforeScenario]
-    public function setUp(): void
-    {
-        $this->container = new ServiceContainer();
-    }
-
-    #[BeforeSuite]
-    public static function initPhpUnitAssertions(): void
-    {
-        /*
-         * See https://github.com/Behat/Behat/discussions/1617
-         *
-         * I want to use PHPUnit assertions in Behat feature contexts, but they sometimes use
-         * PHPUnit's Exporter to render the contents of variables as part of assertion-failed messages.
-         * An Exporter instance is loaded statically from the Registry, which can be populated by
-         * building the Builder... I'm a bit disappointed by this design, but here's a workaround that
-         * will make it work for now:
-         */
-        new Builder()->build([]);
-    }
 
     /**
      * @Given a concert was planned with :numberOfSeats seats
@@ -135,5 +111,26 @@ final class FeatureContext implements Context
             $this->concertId->asString(),
             $this->reservationId->asString()
         );
+    }
+
+    #[BeforeScenario]
+    public function setUp(): void
+    {
+        $this->container = new ServiceContainer();
+    }
+
+    #[BeforeSuite]
+    public static function initPhpUnitAssertions(): void
+    {
+        /*
+         * See https://github.com/Behat/Behat/discussions/1617
+         *
+         * I want to use PHPUnit assertions in Behat feature contexts, but they sometimes use
+         * PHPUnit's Exporter to render the contents of variables as part of assertion-failed messages.
+         * An Exporter instance is loaded statically from the Registry, which can be populated by
+         * building the Builder... I'm a bit disappointed by this design, but here's a workaround that
+         * will make it work for now:
+         */
+        new Builder()->build([]);
     }
 }
