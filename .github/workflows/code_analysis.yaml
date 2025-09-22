@@ -1,0 +1,26 @@
+name: Code Analysis
+
+on:
+    pull_request: null
+    push:
+        branches:
+            - master
+
+jobs:
+    code_analysis:
+        strategy:
+            fail-fast: false
+            matrix:
+                actions:
+                    -
+                        name: "Tests"
+                        run: bin/test
+
+        name: ${{ matrix.actions.name }}
+        runs-on: ubuntu-latest
+
+        steps:
+            -   uses: actions/checkout@v2
+            -   run: docker compose pull
+            -   run: bin/install
+            -   run: ${{ matrix.actions.run }}

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace TicketMill\Domain\Model\Concert;
@@ -42,7 +43,9 @@ final class Concert
     {
     }
 
-    public function makeReservation(ReservationId $reservationId, EmailAddress $emailAddress,
+    public function makeReservation(
+        ReservationId $reservationId,
+        EmailAddress $emailAddress,
         int $numberOfSeats
     ): void {
     }

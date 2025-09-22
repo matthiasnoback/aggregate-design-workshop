@@ -1,20 +1,15 @@
 <?php
+
 declare(strict_types=1);
 
 namespace TicketMill\Domain\Model\Concert;
 
-final class ConcertWasPlanned
+final readonly class ConcertWasPlanned
 {
-    private ConcertId $concertId;
-
-    private int $numberOfSeats;
-
     public function __construct(
-        ConcertId $concertId,
-        int $numberOfSeats
+        private ConcertId $concertId,
+        private int $numberOfSeats
     ) {
-        $this->concertId = $concertId;
-        $this->numberOfSeats = $numberOfSeats;
     }
 
     public function concertId(): ConcertId

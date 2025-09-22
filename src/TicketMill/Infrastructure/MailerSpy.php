@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace TicketMill\Infrastructure;
@@ -27,7 +28,7 @@ final class MailerSpy implements Mailer
     {
         Assert::assertArrayHasKey($emailAddress, $this->emails, 'No mails were sent to ' . $emailAddress);
         foreach ($this->emails[$emailAddress] as $emailBody) {
-            if (strpos($emailBody, $messageContains) !== false) {
+            if (str_contains($emailBody, $messageContains)) {
                 return;
             }
         }

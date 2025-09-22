@@ -7,16 +7,13 @@ use ReflectionObject;
 
 final class ServiceContainerTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function it_can_instantiate_all_publicly_defined_services(): void
+    public function testItCanInstantiateAllPubliclyDefinedServices(): void
     {
         $container = new ServiceContainer();
 
         $reflection = new ReflectionObject($container);
         foreach ($reflection->getMethods() as $method) {
-            if (!$method->isPublic()) {
+            if (! $method->isPublic()) {
                 continue;
             }
 

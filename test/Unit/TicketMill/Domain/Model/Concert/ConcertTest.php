@@ -9,10 +9,7 @@ use Utility\AggregateTestCase;
 
 final class ConcertTest extends AggregateTestCase
 {
-    /**
-     * @test
-     */
-    public function it_requires_a_name_that_is_not_empty(): void
+    public function testItRequiresANameThatIsNotEmpty(): void
     {
         $this->markTestIncomplete('Assignment 1');
 
@@ -27,10 +24,7 @@ final class ConcertTest extends AggregateTestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function it_requires_a_positive_number_of_seats_available(): void
+    public function testItRequiresAPositiveNumberOfSeatsAvailable(): void
     {
         $this->markTestIncomplete('Assignment 1');
 
@@ -45,10 +39,7 @@ final class ConcertTest extends AggregateTestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function it_can_be_rescheduled(): void
+    public function testItCanBeRescheduled(): void
     {
         $this->markTestIncomplete('Assignment 2');
 
@@ -58,10 +49,7 @@ final class ConcertTest extends AggregateTestCase
         $concert->reschedule($anotherDate = ScheduledDate::fromString('2021-10-01 20:00'));
     }
 
-    /**
-     * @test
-     */
-    public function rescheduling_to_the_same_date_has_no_effect(): void
+    public function testReschedulingToTheSameDateHasNoEffect(): void
     {
         $this->markTestIncomplete('Assignment 2');
 
@@ -74,10 +62,7 @@ final class ConcertTest extends AggregateTestCase
         $concert->reschedule($sameDate = ScheduledDate::fromString($date));
     }
 
-    /**
-     * @test
-     */
-    public function it_can_not_be_rescheduled_when_it_has_been_cancelled(): void
+    public function testItCanNotBeRescheduledWhenItHasBeenCancelled(): void
     {
         $this->markTestIncomplete('Assignment 3');
 
@@ -90,10 +75,7 @@ final class ConcertTest extends AggregateTestCase
         $aCancelledConcert->reschedule($anotherDate = ScheduledDate::fromString('2021-11-02 20:00'));
     }
 
-    /**
-     * @test
-     */
-    public function it_can_be_cancelled(): void
+    public function testItCanBeCancelled(): void
     {
         $this->markTestIncomplete('Assignment 3');
 
@@ -105,10 +87,7 @@ final class ConcertTest extends AggregateTestCase
         $this->fail('TODO: Remove this statement; verify that the concert has indeed been cancelled');
     }
 
-    /**
-     * @test
-     */
-    public function cancelling_the_concert_twice_has_no_effect(): void
+    public function testCancellingTheConcertTwiceHasNoEffect(): void
     {
         $this->markTestIncomplete('Assignment 3');
 
@@ -121,10 +100,7 @@ final class ConcertTest extends AggregateTestCase
         $this->fail('TODO: Remove this statement; verify that the concert has not been cancelled again');
     }
 
-    /**
-     * @test
-     */
-    public function you_can_reserve_seats_for_a_concert(): void
+    public function testYouCanReserveSeatsForAConcert(): void
     {
         $this->markTestIncomplete('Assignment 4');
 
@@ -139,10 +115,7 @@ final class ConcertTest extends AggregateTestCase
         self::assertEquals(7, $concert->numberOfSeatsAvailable());
     }
 
-    /**
-     * @test
-     */
-    public function you_can_not_reserve_more_seats_for_a_concert_than_there_are_seats(): void
+    public function testYouCanNotReserveMoreSeatsForAConcertThanThereAreSeats(): void
     {
         $this->markTestIncomplete('Assignment 4');
 
@@ -154,10 +127,7 @@ final class ConcertTest extends AggregateTestCase
         $concert->makeReservation($this->aReservationId(), $this->anEmailAddress(), $moreThanAvailable = 11);
     }
 
-    /**
-     * @test
-     */
-    public function you_can_not_reserve_more_seats_for_a_concert_than_there_are_seats_available(): void
+    public function testYouCanNotReserveMoreSeatsForAConcertThanThereAreSeatsAvailable(): void
     {
         $this->markTestIncomplete('Assignment 4');
 
@@ -171,10 +141,7 @@ final class ConcertTest extends AggregateTestCase
         $concert->makeReservation($this->anotherReservationId(), $this->anEmailAddress(), $moreThanAvailable = 6);
     }
 
-    /**
-     * @test
-     */
-    public function cancelling_a_reservation_makes_its_seats_available_again(): void
+    public function testCancellingAReservationMakesItsSeatsAvailableAgain(): void
     {
         $this->markTestIncomplete('Assignment 4');
 
@@ -193,10 +160,7 @@ final class ConcertTest extends AggregateTestCase
         self::assertEquals(10 - 4, $concert->numberOfSeatsAvailable());
     }
 
-    /**
-     * @test
-     */
-    public function it_will_fail_to_cancel_a_reservation_if_the_reservation_does_not_exist(): void
+    public function testItWillFailToCancelAReservationIfTheReservationDoesNotExist(): void
     {
         $this->markTestIncomplete('Assignment 4');
 

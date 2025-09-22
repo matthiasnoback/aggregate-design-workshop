@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace TicketMill\Infrastructure;
@@ -15,9 +16,13 @@ use TicketMill\Domain\Model\Reservation\ReservationRepository;
 final class ServiceContainer
 {
     private ?EventDispatcher $eventDispatcher = null;
+
     private ?ConcertRepository $concertRepository = null;
+
     private ?ReservationRepository $reservationRepository = null;
+
     private ?MailerSpy $mailer = null;
+
     private ?EventSubscriberSpy $eventSubscriberSpy = null;
 
     public function planConcertService(): PlanConcert
@@ -35,13 +40,30 @@ final class ServiceContainer
         return new CancelReservation($this->concertRepository(), $this->eventDispatcher());
     }
 
+    public function mailer(): MailerSpy
+    {
+        if ($this->mailer === null) {
+            $this->mailer = new MailerSpy();
+        }
+
+        return $this->mailer;
+    }
+
+    /**
+     * @return array<object>
+     */
+    public function dispatchedEvents(): array
+    {
+        return $this->eventSubscriberSpy()->dispatchedEvents();
+    }
+
     private function eventDispatcher(): EventDispatcher
     {
         if ($this->eventDispatcher === null) {
             $this->eventDispatcher = new EventDispatcher();
             $this->eventDispatcher->subscribeToAllEvents(
                 function (object $event): void {
-                    echo get_class($event) . "\n";
+                    echo $event::class . "\n";
                 }
             );
             $this->eventDispatcher->subscribeToAllEvents(
@@ -74,15 +96,6 @@ final class ServiceContainer
         return $this->reservationRepository;
     }
 
-    public function mailer(): MailerSpy
-    {
-        if ($this->mailer === null) {
-            $this->mailer = new MailerSpy();
-        }
-
-        return $this->mailer;
-    }
-
     private function eventSubscriberSpy(): EventSubscriberSpy
     {
         if ($this->eventSubscriberSpy === null) {
@@ -90,13 +103,5 @@ final class ServiceContainer
         }
 
         return $this->eventSubscriberSpy;
-    }
-
-    /**
-     * @return array<object>
-     */
-    public function dispatchedEvents(): array
-    {
-        return $this->eventSubscriberSpy()->dispatchedEvents();
     }
 }

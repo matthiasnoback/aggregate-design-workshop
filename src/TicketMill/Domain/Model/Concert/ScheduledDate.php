@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace TicketMill\Domain\Model\Concert;
@@ -6,7 +7,7 @@ namespace TicketMill\Domain\Model\Concert;
 use DateTimeImmutable;
 use InvalidArgumentException;
 
-final class ScheduledDate
+final readonly class ScheduledDate
 {
     private string $date;
 
@@ -30,7 +31,7 @@ final class ScheduledDate
         return $this->date;
     }
 
-    public function equals(ScheduledDate $other): bool
+    public function equals(self $other): bool
     {
         return $this->date === $other->date;
     }

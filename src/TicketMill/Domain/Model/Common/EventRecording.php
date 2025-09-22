@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace TicketMill\Domain\Model\Common;
@@ -12,13 +13,6 @@ trait EventRecording
      */
     private array $events = [];
 
-    final private function recordThat(object $event): void
-    {
-        Assertion::isObject($event, 'An event should be an object');
-
-        $this->events[] = $event;
-    }
-
     /**
      * @return array<object>
      */
@@ -28,5 +22,12 @@ trait EventRecording
         $this->events = [];
 
         return $events;
+    }
+
+    final protected function recordThat(object $event): void
+    {
+        Assertion::isObject($event, 'An event should be an object');
+
+        $this->events[] = $event;
     }
 }

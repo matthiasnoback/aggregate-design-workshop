@@ -1,11 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace TicketMill\Domain\Model\Concert;
 
 use Assert\Assertion;
 
-final class ReservationId
+final readonly class ReservationId
 {
     private string $id;
 

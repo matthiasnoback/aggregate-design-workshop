@@ -1,17 +1,16 @@
 <?php
+
 declare(strict_types=1);
 
 namespace TicketMill\Application\Notifications;
 
 use TicketMill\Domain\Model\Concert\ReservationWasMade;
 
-final class SendMail
+final readonly class SendMail
 {
-    private Mailer $mailer;
-
-    public function __construct(Mailer $mailer)
-    {
-        $this->mailer = $mailer;
+    public function __construct(
+        private Mailer $mailer
+    ) {
     }
 
     public function whenReservationWasMade(ReservationWasMade $reservationWasMade): void

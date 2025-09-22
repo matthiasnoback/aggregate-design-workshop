@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace TicketMill\Application;
@@ -9,17 +10,12 @@ use TicketMill\Domain\Model\Concert\ConcertId;
 use TicketMill\Domain\Model\Concert\ConcertRepository;
 use TicketMill\Domain\Model\Concert\ScheduledDate;
 
-final class PlanConcert
+final readonly class PlanConcert
 {
-    private ConcertRepository $concertRepository;
-    private EventDispatcher $eventDispatcher;
-
     public function __construct(
-        ConcertRepository $concertRepository,
-        EventDispatcher $eventDispatcher
+        private ConcertRepository $concertRepository,
+        private EventDispatcher $eventDispatcher
     ) {
-        $this->concertRepository = $concertRepository;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function plan(

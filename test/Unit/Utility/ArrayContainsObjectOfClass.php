@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Utility;
@@ -8,32 +9,10 @@ use PHPUnit\Framework\Constraint\Constraint;
 
 final class ArrayContainsObjectOfClass extends Constraint
 {
-    private string $expectedClass;
-    private int $expectedNumberOfObjects;
-
-    public function __construct(string $expectedClass, int $expectedNumberOfObjects)
-    {
-        $this->expectedClass = $expectedClass;
-        $this->expectedNumberOfObjects = $expectedNumberOfObjects;
-    }
-
-    protected function matches($other): bool
-    {
-        Assertion::isArray($other);
-
-        $countedNumberOfObjects = 0;
-
-        foreach ($other as $element) {
-            if (get_class($element) === $this->expectedClass) {
-                $countedNumberOfObjects++;
-            }
-        }
-
-        if ($countedNumberOfObjects === $this->expectedNumberOfObjects) {
-            return true;
-        }
-
-        return false;
+    public function __construct(
+        private readonly string $expectedClass,
+        private readonly int $expectedNumberOfObjects
+    ) {
     }
 
     public function toString(): string
@@ -43,5 +22,26 @@ final class ArrayContainsObjectOfClass extends Constraint
             $this->expectedNumberOfObjects,
             $this->expectedClass
         );
+    }
+
+    #[\Override]
+    protected function matches(mixed $other): bool
+    {
+        Assertion::isArray($other);
+
+        $countedNumberOfObjects = 0;
+
+        foreach ($other as $element) {
+            Assertion::isObject($element);
+            if ($element::class === $this->expectedClass) {
+                $countedNumberOfObjects++;
+            }
+        }
+
+        if ($countedNumberOfObjects === $this->expectedNumberOfObjects) {
+            return true;
+        }
+
+        return false;
     }
 }

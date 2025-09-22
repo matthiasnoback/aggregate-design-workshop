@@ -15,20 +15,14 @@ final class MailerSpyTest extends TestCase
         $this->mailer = new MailerSpy();
     }
 
-    /**
-     * @test
-     */
-    public function it_fails_if_no_email_was_sent(): void
+    public function testItFailsIfNoEmailWasSent(): void
     {
         $this->expectException(ExpectationFailedException::class);
 
         $this->mailer->assertEmailSent('test@example.com', 'body contains');
     }
 
-    /**
-     * @test
-     */
-    public function it_fails_if_an_email_was_sent_but_it_does_not_contain_the_expected_message(): void
+    public function testItFailsIfAnEmailWasSentButItDoesNotContainTheExpectedMessage(): void
     {
         $emailAddress = $this->anEmailAddress();
         $this->mailer->sendReservationWasMadeEmail($emailAddress, $this->aNumberOfSeats());
@@ -38,10 +32,7 @@ final class MailerSpyTest extends TestCase
         $this->mailer->assertEmailSent($emailAddress->asString(), 'not contained in the body');
     }
 
-    /**
-     * @test
-     */
-    public function it_succeeds_if_an_email_was_sent_and_it_contains_the_expected_message(): void
+    public function testItSucceedsIfAnEmailWasSentAndItContainsTheExpectedMessage(): void
     {
         $emailAddress = $this->anEmailAddress();
         $numberOfSeats = $this->aNumberOfSeats();
