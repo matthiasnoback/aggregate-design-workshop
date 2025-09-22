@@ -6,8 +6,11 @@ namespace Test\Acceptance;
 
 use Assert\Assertion;
 use Behat\Behat\Context\Context;
+use Behat\Hook\BeforeScenario;
+use Behat\Hook\BeforeSuite;
 use BehatExpectException\ExpectException;
 use Exception;
+use PHPUnit\TextUI\Configuration\Builder;
 use TicketMill\Domain\Model\Concert\ConcertId;
 use TicketMill\Domain\Model\Concert\ReservationId;
 use TicketMill\Infrastructure\ServiceContainer;
@@ -27,12 +30,25 @@ final class FeatureContext implements Context
 
     private ?ReservationId $reservationId = null;
 
-    /**
-     * @BeforeScenario
-     */
+    #[BeforeScenario]
     public function setUp(): void
     {
         $this->container = new ServiceContainer();
+    }
+
+    #[BeforeSuite]
+    public static function initPhpUnitAssertions(): void
+    {
+        /*
+         * See https://github.com/Behat/Behat/discussions/1617
+         *
+         * I want to use PHPUnit assertions in Behat feature contexts, but they sometimes use
+         * PHPUnit's Exporter to render the contents of variables as part of assertion-failed messages.
+         * An Exporter instance is loaded statically from the Registry, which can be populated by
+         * building the Builder... I'm a bit disappointed by this design, but here's a workaround that
+         * will make it work for now:
+         */
+        new Builder()->build([]);
     }
 
     /**
