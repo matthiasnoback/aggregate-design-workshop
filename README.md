@@ -3,6 +3,8 @@
 ## Requirements
 
 - Docker with Docker Compose
+- Git
+- Bash
 
 ## Getting started
 
