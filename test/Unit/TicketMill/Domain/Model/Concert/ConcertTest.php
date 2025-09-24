@@ -66,8 +66,6 @@ final class ConcertTest extends AggregateTestCase
 
     public function testItCanNotBeRescheduledWhenItHasBeenCancelled(): void
     {
-        $this->markTestIncomplete('Assignment 3');
-
         $aCancelledConcert = $this->aConcert();
         $aCancelledConcert->cancel();
 
@@ -79,27 +77,30 @@ final class ConcertTest extends AggregateTestCase
 
     public function testItCanBeCancelled(): void
     {
-        $this->markTestIncomplete('Assignment 3');
-
         $concert = $this->aConcert();
         $concert->releaseEvents();
 
         $concert->cancel();
 
-        $this->fail('TODO: Remove this statement; verify that the concert has indeed been cancelled');
+        self::assertArrayContainsObjectOfClass(
+            ConcertWasCancelled::class,
+            $concert->releaseEvents()
+        );
     }
 
     public function testCancellingTheConcertTwiceHasNoEffect(): void
     {
-        $this->markTestIncomplete('Assignment 3');
-
         $concert = $this->aConcert();
         $concert->cancel();
         $concert->releaseEvents(); // the first time we cancel the concert, an event will be recorded
 
         $concert->cancel();
 
-        $this->fail('TODO: Remove this statement; verify that the concert has not been cancelled again');
+        self::assertArrayContainsObjectOfClass(
+            ConcertWasCancelled::class,
+            $concert->releaseEvents(),
+            0
+        );
     }
 
     public function testYouCanReserveSeatsForAConcert(): void
