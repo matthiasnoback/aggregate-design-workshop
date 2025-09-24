@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TicketMill\Domain\Model\Concert;
 
+use Assert\Assertion;
 use TicketMill\Domain\Model\Common\EmailAddress;
 use TicketMill\Domain\Model\Common\EventRecording;
 
@@ -24,6 +25,9 @@ final class Concert
         int $numberOfSeats
     ): self {
         $instance = new self();
+
+        Assertion::notBlank($name, 'The name should not be empty');
+        Assertion::greaterThan($numberOfSeats, 0, 'The number of seats should be greater than 0');
 
         $instance->concertId = $concertId;
 

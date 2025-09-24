@@ -11,8 +11,6 @@ final class ConcertTest extends AggregateTestCase
 {
     public function testItRequiresANameThatIsNotEmpty(): void
     {
-        $this->markTestIncomplete('Assignment 1');
-
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('name');
 
@@ -26,8 +24,6 @@ final class ConcertTest extends AggregateTestCase
 
     public function testItRequiresAPositiveNumberOfSeatsAvailable(): void
     {
-        $this->markTestIncomplete('Assignment 1');
-
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('seats');
 
