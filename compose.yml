@@ -1,6 +1,6 @@
 services:
     php:
-        build: docker/php/
+        build: .
         image: matthiasnoback/aggregate-design-workshop-php
         volumes:
             - ./:/app:cached
