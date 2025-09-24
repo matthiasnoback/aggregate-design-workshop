@@ -14,6 +14,8 @@ final class Concert
 
     private ConcertId $concertId;
 
+    private ScheduledDate $scheduledDate;
+
     private function __construct()
     {
     }
@@ -30,6 +32,7 @@ final class Concert
         Assertion::greaterThan($numberOfSeats, 0, 'The number of seats should be greater than 0');
 
         $instance->concertId = $concertId;
+        $instance->scheduledDate = $date;
 
         return $instance;
     }
@@ -41,6 +44,12 @@ final class Concert
 
     public function reschedule(ScheduledDate $newDate): void
     {
+        if ($newDate->equals($this->scheduledDate)) {
+            return;
+        }
+
+        $this->scheduledDate = $newDate;
+        $this->recordThat(new ConcertWasRescheduled());
     }
 
     public function cancel(): void
