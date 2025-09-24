@@ -15,4 +15,4 @@ includes:
   - vendor/phpstan/phpstan-beberlei-assert/extension.neon
   - vendor/phpstan/phpstan-phpunit/extension.neon
   # Don't cause confusion about issues that are known to exist at the beginning of the training
-  - phpstan-baseline.neon
+  - phpstan-baseline.php
