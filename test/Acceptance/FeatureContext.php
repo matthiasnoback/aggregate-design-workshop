@@ -27,6 +27,12 @@ final class FeatureContext implements Context
 
     private ?ReservationId $reservationId = null;
 
+    #[BeforeScenario]
+    public function setUp(): void
+    {
+        $this->container = new ServiceContainer();
+    }
+
     /**
      * @Given a concert was planned with :numberOfSeats seats
      */
@@ -111,12 +117,6 @@ final class FeatureContext implements Context
             $this->concertId->asString(),
             $this->reservationId->asString()
         );
-    }
-
-    #[BeforeScenario]
-    public function setUp(): void
-    {
-        $this->container = new ServiceContainer();
     }
 
     #[BeforeSuite]
