@@ -14,4 +14,14 @@ final readonly class Reservation
         private int $numberOfSeats
     ) {
     }
+
+    public function reservationId(): ReservationId
+    {
+        return $this->reservationId;
+    }
+
+    public function numberOfSeats(): int
+    {
+        return $this->numberOfSeats;
+    }
 }
