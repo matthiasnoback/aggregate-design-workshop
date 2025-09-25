@@ -28,7 +28,7 @@ final readonly class MakeReservation
 
         $reservationId = $this->reservationRepository->nextIdentity();
 
-        if ($concert->numberOfSeatsAvailable() < $numberOfSeats) {
+        if (! $concert->canBeBooked($numberOfSeats)) {
             throw CouldNotReserveSeats::becauseNotEnoughSeatsWereAvailable($numberOfSeats);
         }
 

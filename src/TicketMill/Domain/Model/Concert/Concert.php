@@ -19,6 +19,8 @@ final class Concert
 
     private int $numberOfSeats;
 
+    private int $numberOfSeatsAvailable;
+
     private function __construct()
     {
     }
@@ -37,6 +39,7 @@ final class Concert
         $instance->concertId = $concertId;
         $instance->scheduledDate = $date;
         $instance->numberOfSeats = $numberOfSeats;
+        $instance->numberOfSeatsAvailable = $numberOfSeats;
 
         return $instance;
     }
@@ -70,8 +73,18 @@ final class Concert
         $this->recordThat(new ConcertWasCancelled());
     }
 
-    public function numberOfSeatsAvailable(): int
+    public function canBeBooked(int $numberOfSeats): bool
     {
-        return $this->numberOfSeats;
+        return $this->numberOfSeatsAvailable >= $numberOfSeats;
+    }
+
+    public function decreaseSeatsAvailable(int $numberOfSeats): void
+    {
+        $this->numberOfSeatsAvailable -= $numberOfSeats;
+    }
+
+    public function increaseSeatsAvailable(int $numberOfSeats): void
+    {
+        $this->numberOfSeatsAvailable += $numberOfSeats;
     }
 }
