@@ -4,6 +4,7 @@ namespace TicketMill\Domain\Model\Concert;
 
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+use TicketMill\Domain\Model\Reservation\ReservationId;
 
 final class ReservationIdTest extends TestCase
 {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace TicketMill\Application\Notifications;
 
-use TicketMill\Domain\Model\Concert\ReservationWasMade;
+use TicketMill\Domain\Model\Reservation\ReservationWasMade;
 
 final readonly class SendMail
 {

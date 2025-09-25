@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace TicketMill\Domain\Model\Concert;
+namespace TicketMill\Domain\Model\Reservation;
 
 use TicketMill\Domain\Model\Common\EmailAddress;
+use TicketMill\Domain\Model\Concert\ConcertId;
 
 final readonly class ReservationWasMade
 {

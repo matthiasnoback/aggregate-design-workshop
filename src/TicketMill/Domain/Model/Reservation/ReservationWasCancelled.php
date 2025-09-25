@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace TicketMill\Domain\Model\Concert;
+namespace TicketMill\Domain\Model\Reservation;
 
-use TicketMill\Domain\Model\Common\EmailAddress;
+use TicketMill\Domain\Model\Concert\ConcertId;
 
-final readonly class Reservation
+final readonly class ReservationWasCancelled
 {
     public function __construct(
         private ReservationId $reservationId,
-        private EmailAddress $emailAddress,
+        private ConcertId $concertId,
         private int $numberOfSeats
     ) {
     }
@@ -18,6 +18,11 @@ final readonly class Reservation
     public function reservationId(): ReservationId
     {
         return $this->reservationId;
+    }
+
+    public function concertId(): ConcertId
+    {
+        return $this->concertId;
     }
 
     public function numberOfSeats(): int

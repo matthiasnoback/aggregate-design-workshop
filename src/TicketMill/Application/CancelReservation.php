@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace TicketMill\Application;
 
 use Common\EventDispatcher\EventDispatcher;
-use TicketMill\Domain\Model\Concert\ReservationId;
+use TicketMill\Domain\Model\Reservation\ReservationId;
 use TicketMill\Domain\Model\Reservation\ReservationRepository;
 
 final readonly class CancelReservation

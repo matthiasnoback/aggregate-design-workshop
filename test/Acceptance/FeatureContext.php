@@ -12,7 +12,7 @@ use BehatExpectException\ExpectException;
 use Exception;
 use PHPUnit\TextUI\Configuration\Builder;
 use TicketMill\Domain\Model\Concert\ConcertId;
-use TicketMill\Domain\Model\Concert\ReservationId;
+use TicketMill\Domain\Model\Reservation\ReservationId;
 use TicketMill\Infrastructure\ServiceContainer;
 
 final class FeatureContext implements Context
