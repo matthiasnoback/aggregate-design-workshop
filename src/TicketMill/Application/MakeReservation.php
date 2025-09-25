@@ -8,12 +8,16 @@ use Common\EventDispatcher\EventDispatcher;
 use TicketMill\Domain\Model\Common\EmailAddress;
 use TicketMill\Domain\Model\Concert\ConcertId;
 use TicketMill\Domain\Model\Concert\ConcertRepository;
+use TicketMill\Domain\Model\Concert\CouldNotReserveSeats;
 use TicketMill\Domain\Model\Concert\ReservationId;
+use TicketMill\Domain\Model\Reservation\Reservation;
+use TicketMill\Domain\Model\Reservation\ReservationRepository;
 
 final readonly class MakeReservation
 {
     public function __construct(
         private ConcertRepository $concertRepository,
+        private ReservationRepository $reservationRepository,
         private EventDispatcher $eventDispatcher
     ) {
     }
@@ -22,17 +26,22 @@ final readonly class MakeReservation
     {
         $concert = $this->concertRepository->getById(ConcertId::fromString($concertId));
 
-        $reservationId = $this->concertRepository->nextReservationId();
+        $reservationId = $this->reservationRepository->nextIdentity();
 
-        $concert->makeReservation(
+        if ($concert->numberOfSeatsAvailable() < $numberOfSeats) {
+            throw CouldNotReserveSeats::becauseNotEnoughSeatsWereAvailable($numberOfSeats);
+        }
+
+        $reservation = Reservation::make(
             $reservationId,
+            $concert->concertId(),
             EmailAddress::fromString($emailAddress),
             $numberOfSeats
         );
 
-        $this->concertRepository->save($concert);
+        $this->reservationRepository->save($reservation);
 
-        $this->eventDispatcher->dispatchAll($concert->releaseEvents());
+        $this->eventDispatcher->dispatchAll($reservation->releaseEvents());
 
         return $reservationId;
     }
